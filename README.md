@@ -12,6 +12,25 @@
 ## History
 
 ### 2023-06-29
-> Create git repsitory - 'MiniProject_Basic_LimHyoungTaek'
+> **Create**: git repsitory - 'MiniProject_Basic_LimHyoungTaek'<br>
+> ```markdown
+> # dependencies
+>   - Spring Web
+>   - Spring Boot DevTools
+>   - Spring Data JPA
+>   - Lombok
+>   - Thymeleaf
+>   - Sqlite
+> ```
+>
+> **Add**:
+> ```markdown
+> - DTO(SalesItem, Negotiation, Comment)
+> - Controllers, repositories, entities, services associated with SalesItem
+> - item.html
+> ```
 
-<!-- ![ex_img](img/*.png) -->
+<br>
+
+오늘까지 만든 것 (리드미 구조때문에 임시로 게시)
+![findAll](img/findAll.png)
