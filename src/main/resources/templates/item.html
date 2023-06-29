@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>미니 프로젝트</title>
+</head>
+<body>
+<h3>미니프로젝트 - 멋사마켓</h3> <hr>
+<form>
+    <div th:each="item: ${itemList}">
+        <p>제목: [[${item.title}]]</p>
+        <p>작성자: [[${item.writer}]]</p>
+        <p>내용: [[${item.description}]]</p>
+        <p>희망 가격: [[${item.minPriceWanted}]]</p>
+        <hr>
+    </div>
+</form>
+
+</body>
+</html>
