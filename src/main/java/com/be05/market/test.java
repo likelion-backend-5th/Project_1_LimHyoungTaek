@@ -1,5 +1,5 @@
 package com.be05.market;
 
 public class test {
-    왜안대
+    //왜안되냑ㅇ
 }
