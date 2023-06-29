@@ -1,5 +1,5 @@
 package com.be05.market;
 
 public class test {
-    //왜안되냐구 ㅠㅜ
+    //푸시 왜안되냐구 ㅠㅜ
 }
