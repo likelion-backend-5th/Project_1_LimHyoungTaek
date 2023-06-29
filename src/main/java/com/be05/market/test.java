@@ -1,5 +1,5 @@
 package com.be05.market;
 
 public class test {
-    //푸시 왜안되냐구 ㅠㅜ
+    // 이렇게하면 둘다 푸시되나?
 }
