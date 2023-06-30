@@ -30,6 +30,11 @@ public class ItemController {
     }
 
     // TODO: GET /items/{itemId}
+    @GetMapping("/{itemId}")
+    public SalesItem readOne(@PathVariable("itemId") Long id) {
+        return itemService.read(id);
+    }
+
     // TODO: PUT /items/{itemId}
     // TODO: PUT /items/{itemId}/image
     // TODO: DELETE /items/{itemId}

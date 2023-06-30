@@ -8,7 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,12 @@ public class ItemService {
         Pageable pageable = PageRequest.of(page, limit, Sort.by("id").descending());
         Page<ItemEntity> itemEntities = itemRepository.findAll(pageable);
         return itemEntities.map(SalesItem::fromEntity);
+    }
+
+    public SalesItem read(Long id) {
+        Optional<ItemEntity> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isPresent()) return SalesItem.fromEntity(optionalItem.get());
+        else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
