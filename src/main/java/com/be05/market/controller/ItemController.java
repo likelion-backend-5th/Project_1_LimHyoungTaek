@@ -38,6 +38,7 @@ public class ItemController {
                        @RequestParam("description") String description,
                        @RequestParam("price") Long price) {
         itemService.createProduct(writer, password, title, description, price);
+        log.info("등록이 완료되었습니다.");
         return "redirect:/items";
     }
 
