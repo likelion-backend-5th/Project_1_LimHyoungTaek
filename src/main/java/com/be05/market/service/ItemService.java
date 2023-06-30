@@ -4,6 +4,10 @@ import com.be05.market.dto.SalesItem;
 import com.be05.market.entity.ItemEntity;
 import com.be05.market.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,4 +25,11 @@ public class ItemService {
         newItems.setStatus("판매중");
         return SalesItem.fromEntity(itemRepository.save(newItems));
     }
+
+    public Page<SalesItem> readItemsPaged(Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit, Sort.by("id").descending());
+        Page<ItemEntity> itemEntities = itemRepository.findAll(pageable);
+        return itemEntities.map(SalesItem::fromEntity);
+    }
+
 }
