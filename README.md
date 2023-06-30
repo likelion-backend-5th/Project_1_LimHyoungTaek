@@ -14,12 +14,12 @@
 **Create**: git repsitory - 'MiniProject_Basic_LimHyoungTaek'<br>
 
 > ### dependencies
->   - Spring Web
->   - Spring Boot DevTools
->   - Spring Data JPA
->   - Lombok
->   - Thymeleaf
->   - Sqlite
+> - Spring Web
+> - Spring Boot DevTools
+> - Spring Data JPA
+> - Lombok
+> - Thymeleaf
+> - Sqlite
 
 **Add**:
 > - DTO(SalesItem, Negotiation, Comment)
@@ -35,10 +35,10 @@
 **Implemented**:
 
 > ### TODO
-> POST /items<br>
-> GET /items?page={page}&limit={limit}<br>
-> GET /items/{itemId}<br>
-> PUT /items/{itemId}<br>
-> DELETE /items/{itemId}<br>
-> PUT /items/{itemId}/image <- ~~i'll do laterㅎㅎ~~
+> - POST /items<br>
+> - GET /items?page={page}&limit={limit}<br>
+> - GET /items/{itemId}<br>
+> - PUT /items/{itemId}<br>
+> - DELETE /items/{itemId}<br>
+> - PUT /items/{itemId}/image <- ~~i'll do laterㅎㅎ~~
 <br>+ 나중에 링크
