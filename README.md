@@ -25,12 +25,13 @@
 >
 > **Add**:
 > ```markdown
-> - DTO(SalesItem, Negotiation, Comment)
+> - ERD(SalesItem, Negotiation, Comment)
 > - Controllers, repositories, entities, services associated with SalesItem
 > - item.html
 > ```
 
 <br>
 
-오늘까지 만든 것 (리드미 구조때문에 임시로 게시)
-![findAll](img/findAll.png)
+### 1. ~~~ 기능 구현
+> ![findAll](img/findAll.png)
+> <br> 어쩌구 저쩌구 내용을 씁시다.
