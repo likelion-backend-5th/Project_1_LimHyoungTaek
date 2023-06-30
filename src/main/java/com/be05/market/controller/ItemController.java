@@ -1,23 +1,25 @@
 package com.be05.market.controller;
 
+import com.be05.market.dto.ResponseDto;
 import com.be05.market.dto.SalesItem;
 import com.be05.market.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private final ResponseDto responseDto = new ResponseDto();
 
     // TODO: POST /items
     @PostMapping("")
-    public SalesItem create(@RequestBody SalesItem items) {
-        return itemService.createItem(items);
+    public ResponseDto create(@RequestBody SalesItem items) {
+        itemService.createItem(items);
+        responseDto.setMessage("등록이 완료되었습니다.");
+        return responseDto;
     }
 
     // TODO: GET /items?page={page}&limit={limit}
@@ -37,16 +39,21 @@ public class ItemController {
 
     // TODO: PUT /items/{itemId}
     @PutMapping("/{itemId}")
-    public SalesItem update(@PathVariable Long itemId,
+    public ResponseDto update(@PathVariable Long itemId,
                              @RequestBody SalesItem items) {
-        return itemService.updateItem(itemId, items);
+        itemService.updateItem(itemId, items);
+        responseDto.setMessage("물품이 수정되었습니다.");
+        return responseDto;
     }
 
     // TODO: PUT /items/{itemId}/image
 
     // TODO: DELETE /items/{itemId}
     @DeleteMapping("/{itemId}")
-    public void delete(@PathVariable Long itemId) {
-        itemService.deleteItem(itemId);
+    public ResponseDto delete(@PathVariable Long itemId,
+                              @RequestBody SalesItem items) {
+        itemService.deleteItem(itemId, items);
+        responseDto.setMessage("물품을 삭제했습니다.");
+        return responseDto;
     }
 }
