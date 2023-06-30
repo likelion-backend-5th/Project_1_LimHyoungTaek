@@ -36,6 +36,12 @@ public class ItemController {
     }
 
     // TODO: PUT /items/{itemId}
+    @PutMapping("/{itemId}")
+    public SalesItem update(@PathVariable("itemId") Long id,
+                             @RequestBody SalesItem items) {
+        return itemService.updateItem(id, items);
+    }
+
     // TODO: PUT /items/{itemId}/image
     // TODO: DELETE /items/{itemId}
 }

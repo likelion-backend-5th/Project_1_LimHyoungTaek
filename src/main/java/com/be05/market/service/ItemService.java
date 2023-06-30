@@ -42,4 +42,17 @@ public class ItemService {
         else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    public SalesItem updateItem(Long id, SalesItem item) {
+        Optional<ItemEntity> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isPresent()) {
+            ItemEntity itemEntity = optionalItem.get();
+            itemEntity.setTitle(item.getTitle());
+            itemEntity.setDescription(item.getDescription());
+            itemEntity.setMinPriceWanted(item.getMinPriceWanted());
+            itemRepository.save(itemEntity);
+            return SalesItem.fromEntity(itemEntity);
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+    }
+
 }
