@@ -37,11 +37,16 @@ public class ItemController {
 
     // TODO: PUT /items/{itemId}
     @PutMapping("/{itemId}")
-    public SalesItem update(@PathVariable("itemId") Long id,
+    public SalesItem update(@PathVariable Long itemId,
                              @RequestBody SalesItem items) {
-        return itemService.updateItem(id, items);
+        return itemService.updateItem(itemId, items);
     }
 
     // TODO: PUT /items/{itemId}/image
+
     // TODO: DELETE /items/{itemId}
+    @DeleteMapping("/{itemId}")
+    public void delete(@PathVariable Long itemId) {
+        itemService.deleteItem(itemId);
+    }
 }

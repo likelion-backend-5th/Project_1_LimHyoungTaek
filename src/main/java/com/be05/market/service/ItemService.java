@@ -55,4 +55,9 @@ public class ItemService {
         else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    public void deleteItem(Long id) {
+        if (itemRepository.existsById(id))
+            itemRepository.deleteById(id);
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
 }
