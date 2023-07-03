@@ -28,7 +28,7 @@ import java.util.Optional;
 public class CommentService {
     private final CommentRepository commentRepository;
 
-    // Post Comment
+    // Post Comment, Reply?
     public void postComment(CommentDto comments) {
     }
 
@@ -39,11 +39,6 @@ public class CommentService {
 
     // Modifying Comment
     public void modifiedComment(Long id, SalesItemDto item) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    // Post Reply
-    public void postReply(Long id, SalesItemDto item) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
