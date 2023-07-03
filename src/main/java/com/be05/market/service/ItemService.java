@@ -1,6 +1,6 @@
 package com.be05.market.service;
 
-import com.be05.market.dto.salesitem.PageInfoDto;
+import com.be05.market.dto.mapping.ItemPageInfoDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.entity.ItemEntity;
 import com.be05.market.repository.ItemRepository;
@@ -40,11 +40,11 @@ public class ItemService {
     }
 
     // FindAll(Pages)
-    public Page<PageInfoDto> readItemsPaged(Integer page, Integer limit) {
+    public Page<ItemPageInfoDto> readItemsPaged(Integer page, Integer limit) {
         Pageable pageable =
                 PageRequest.of(page, limit, Sort.by("id"));
         Page<ItemEntity> itemEntities = itemRepository.findAll(pageable);
-        return itemEntities.map(PageInfoDto::fromEntity);
+        return itemEntities.map(ItemPageInfoDto::fromEntity);
     }
 
     // FindById
@@ -58,7 +58,7 @@ public class ItemService {
     // Update
     public void updateItem(Long id, SalesItemDto item) {
         ItemEntity itemEntity = getItemById(id); // Import item entities with ID
-        validPW(itemEntity, item.getPassword()); // Check Password
+        itemEntity.validatePassword(item.getPassword()); // Check Password
 
         itemEntity.setTitle(item.getTitle());
         itemEntity.setDescription(item.getDescription());
@@ -71,7 +71,7 @@ public class ItemService {
     public void uploadItemImage(Long id, String password, MultipartFile itemFile) {
         // 0. Handling Exceptions
         ItemEntity itemEntity = getItemById(id);
-        validPW(itemEntity, password);
+        itemEntity.validatePassword(password);
 
         // 1. create folder
         String itemDirPath = String.format("images/%d/", id);
@@ -111,7 +111,8 @@ public class ItemService {
     // Delete
     public void deleteItem(Long id, SalesItemDto item) {
         ItemEntity itemEntity = getItemById(id);
-        validPW(itemEntity, item.getPassword());
+        itemEntity.validatePassword(item.getPassword());
+
 
         if (itemRepository.existsById(id)) itemRepository.deleteById(id);
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -121,12 +122,5 @@ public class ItemService {
     public ItemEntity getItemById(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
-
-    // Check Password
-    private void validPW(ItemEntity itemEntity, String password) {
-        if (!itemEntity.getPassword().equals(password)) {
-            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
-        }
     }
 }
