@@ -4,7 +4,7 @@ import com.be05.market.entity.ItemEntity;
 import lombok.Data;
 
 @Data
-public class SalesItem {
+public class SalesItemDto {
     private Long id;
     private String title;
     private String description;
@@ -14,8 +14,8 @@ public class SalesItem {
     private String writer;
     private String password;
 
-    public static SalesItem fromEntity(ItemEntity entity) {
-        SalesItem salesItem = new SalesItem();
+    public static SalesItemDto fromEntity(ItemEntity entity) {
+        SalesItemDto salesItem = new SalesItemDto();
         salesItem.setId(entity.getId());
         salesItem.setTitle(entity.getTitle());
         salesItem.setDescription(entity.getDescription());
