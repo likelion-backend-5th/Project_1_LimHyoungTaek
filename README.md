@@ -32,9 +32,8 @@
 **Add**:
 > - DTO(ResponseDto)
 
-**Implemented**:
+**Implemented [TODO]**:
 
-> ### TODO
 > POST /items<br>
 > GET /items?page={page}&limit={limit}<br>
 > GET /items/{itemId}<br>
