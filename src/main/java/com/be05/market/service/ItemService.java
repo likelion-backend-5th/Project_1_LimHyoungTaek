@@ -11,8 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 @Slf4j
@@ -64,6 +68,52 @@ public class ItemService {
                 itemRepository.save(itemEntity);
             } else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    // Upload Image
+    public void uploadItemImage(Long id, String password, MultipartFile itemFile) {
+        // 0. Handling Exceptions
+        Optional<ItemEntity> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        ItemEntity itemEntity = optionalItem.get();
+        if (!itemEntity.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        // 1. create folder
+        String itemDirPath = String.format("images/%d/", id);
+        log.info(itemDirPath);
+        try {
+            Files.createDirectories(Path.of(itemDirPath));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // pfpName(Img Name + Extension) -> pfpPath(itemDirPath + pfpName)
+        String originalFilename = itemFile.getOriginalFilename();
+        assert originalFilename != null;
+        String[] fileNameSplit = originalFilename.split("\\.");
+        String extension = fileNameSplit[fileNameSplit.length - 1];
+        String pfpName = "image." + extension;
+        log.info(pfpName);
+
+        String pfpPath = itemDirPath + pfpName;
+        log.info(pfpPath);
+
+        // 2. Save MultipartFile
+        try {
+            itemFile.transferTo(Path.of(pfpPath));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // 3. Set ImageURL
+        log.info(String.format("/static/%d/%s", id, pfpName));
+        itemEntity.setImageURL(String.format("/static/%d/%s", id, pfpName));
+        SalesItem.fromEntity(itemRepository.save(itemEntity));
     }
 
     // Delete
