@@ -17,7 +17,7 @@ public class CommentController {
     // TODO: POST /items/{itemId}/comments
     @PostMapping("/comments")
     public ResponseDto createComment(@PathVariable("itemId") Long itemId,
-                             @RequestBody CommentDto commentDto) {
+                                     @RequestBody CommentDto commentDto) {
         commentService.postComment(itemId, commentDto);
         responseDto.setMessage("댓글이 등록되었습니다.");
         return responseDto;
@@ -29,6 +29,31 @@ public class CommentController {
     }
 
     // TODO: PUT /items/{itemId}/comments/{commentId}
+    @PutMapping("/comments/{commentId}")
+    public ResponseDto updateComment(@PathVariable("commentId") Long commentId,
+                                     @PathVariable("itemId") Long itemId,
+                                     @RequestBody CommentDto commentDto) {
+        commentService.modifiedComment(commentId, itemId, commentDto);
+        responseDto.setMessage("댓글이 수정되었습니다.");
+        return responseDto;
+    }
+
     // TODO: PUT /items/{itemId}/comments/{commentId}/reply
+    @PutMapping("/comments/{commentId}/reply")
+    public ResponseDto updateReply(@PathVariable("commentId") Long commentId,
+                                     @PathVariable("itemId") Long itemId,
+                                     @RequestBody CommentDto commentDto) {
+        commentService.modifiedReply(commentId, itemId, commentDto);
+        responseDto.setMessage("댓글에 답변이 추가되었습니다.");
+        return responseDto;
+    }
+
     // TODO: DELETE /items/{itemId}/comments/{commentId}
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseDto deleteComment(@PathVariable("commentId") Long commentId,
+                                     @PathVariable("itemId") Long itemId) {
+        commentService.deleteComment(commentId, itemId);
+        responseDto.setMessage("댓글을 삭제했습니다.");
+        return responseDto;
+    }
 }
