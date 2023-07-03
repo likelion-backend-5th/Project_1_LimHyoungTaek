@@ -16,7 +16,7 @@ public class CommentController {
 
     // TODO: POST /items/{itemId}/comments
     @PostMapping("/comments")
-    public ResponseDto create(@PathVariable("itemId") Long itemId,
+    public ResponseDto createComment(@PathVariable("itemId") Long itemId,
                              @RequestBody CommentDto commentDto) {
         commentService.postComment(itemId, commentDto);
         responseDto.setMessage("댓글이 등록되었습니다.");
