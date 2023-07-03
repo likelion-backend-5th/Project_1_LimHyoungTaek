@@ -1,6 +1,6 @@
 package com.be05.market.service;
 
-import com.be05.market.dto.SalesItem;
+import com.be05.market.dto.SalesItemDto;
 import com.be05.market.entity.ItemEntity;
 import com.be05.market.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     // CREATE
-    public void createItem(SalesItem items) {
+    public void createItem(SalesItemDto items) {
         ItemEntity newItems = new ItemEntity();
         newItems.setTitle(items.getTitle());
         newItems.setDescription(items.getDescription());
@@ -34,28 +34,28 @@ public class ItemService {
         newItems.setWriter(items.getWriter());
         newItems.setPassword(items.getPassword());
         newItems.setStatus("판매중");
-        SalesItem.fromEntity(itemRepository.save(newItems));
+        SalesItemDto.fromEntity(itemRepository.save(newItems));
         log.info(String.valueOf(newItems));
     }
 
     // FindAll(Pages)
-    public Page<SalesItem> readItemsPaged(Integer page, Integer limit) {
+    public Page<SalesItemDto> readItemsPaged(Integer page, Integer limit) {
         Pageable pageable =
-                PageRequest.of(page, limit, Sort.by("id").descending());
+                PageRequest.of(page, limit, Sort.by("id"));
         Page<ItemEntity> itemEntities = itemRepository.findAll(pageable);
-        return itemEntities.map(SalesItem::fromEntity);
+        return itemEntities.map(SalesItemDto::fromEntity);
     }
 
     // FindById
-    public SalesItem read(Long id) {
+    public SalesItemDto read(Long id) {
         Optional<ItemEntity> optionalItem = itemRepository.findById(id);
         log.info(String.valueOf(optionalItem));
-        if (optionalItem.isPresent()) return SalesItem.fromEntity(optionalItem.get());
+        if (optionalItem.isPresent()) return SalesItemDto.fromEntity(optionalItem.get());
         else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
     // Update
-    public void updateItem(Long id, SalesItem item) {
+    public void updateItem(Long id, SalesItemDto item) {
         ItemEntity itemEntity = getItemById(id); // Import item entities with ID
         validPW(itemEntity, item.getPassword()); // Check Password
 
@@ -104,11 +104,11 @@ public class ItemService {
         // 3. Set ImageURL
         log.info(String.format("/static/%d/%s", id, pfpName));
         itemEntity.setImageURL(String.format("/static/%d/%s", id, pfpName));
-        SalesItem.fromEntity(itemRepository.save(itemEntity));
+        SalesItemDto.fromEntity(itemRepository.save(itemEntity));
     }
 
     // Delete
-    public void deleteItem(Long id, SalesItem item) {
+    public void deleteItem(Long id, SalesItemDto item) {
         ItemEntity itemEntity = getItemById(id);
         validPW(itemEntity, item.getPassword());
 

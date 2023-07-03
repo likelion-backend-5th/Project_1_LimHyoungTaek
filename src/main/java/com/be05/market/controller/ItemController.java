@@ -1,7 +1,7 @@
 package com.be05.market.controller;
 
 import com.be05.market.dto.ResponseDto;
-import com.be05.market.dto.SalesItem;
+import com.be05.market.dto.SalesItemDto;
 import com.be05.market.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ public class ItemController {
 
     // TODO: POST /items
     @PostMapping
-    public ResponseDto create(@RequestBody SalesItem items) {
+    public ResponseDto create(@RequestBody SalesItemDto items) {
         itemService.createItem(items);
         responseDto.setMessage("등록이 완료되었습니다.");
         return responseDto;
@@ -26,7 +26,7 @@ public class ItemController {
 
     // TODO: GET /items?page={page}&limit={limit}
     @GetMapping
-    public Page<SalesItem> readAll(
+    public Page<SalesItemDto> readAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit
     ) {
@@ -35,14 +35,14 @@ public class ItemController {
 
     // TODO: GET /items/{itemId}
     @GetMapping("/{itemId}")
-    public SalesItem readOne(@PathVariable("itemId") Long id) {
+    public SalesItemDto readOne(@PathVariable("itemId") Long id) {
         return itemService.read(id);
     }
 
     // TODO: PUT /items/{itemId}
     @PutMapping("/{itemId}")
     public ResponseDto update(@PathVariable Long itemId,
-                             @RequestBody SalesItem items) {
+                             @RequestBody SalesItemDto items) {
         itemService.updateItem(itemId, items);
         responseDto.setMessage("물품이 수정되었습니다.");
         return responseDto;
@@ -63,7 +63,7 @@ public class ItemController {
     // TODO: DELETE /items/{itemId}
     @DeleteMapping("/{itemId}")
     public ResponseDto delete(@PathVariable Long itemId,
-                              @RequestBody SalesItem items) {
+                              @RequestBody SalesItemDto items) {
         itemService.deleteItem(itemId, items);
         responseDto.setMessage("물품을 삭제했습니다.");
         return responseDto;
