@@ -25,7 +25,7 @@ public class ItemEntity {
 
     private String status;
 
-    @NotNull(message = "작성자를 작성해주세요.")
+    @NotNull(message = "작성자를 입력해주세요.")
     private String writer;
 
     private String password;
