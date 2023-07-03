@@ -2,6 +2,7 @@ package com.be05.market.controller;
 
 import com.be05.market.dto.CommentDto;
 import com.be05.market.dto.ResponseDto;
+import com.be05.market.dto.mapping.CommentPageInfoDto;
 import com.be05.market.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class CommentController {
     }
     // TODO: GET /items/{itemId}/comments
     @GetMapping("/comments")
-    public Page<CommentDto> readAllReply(@PathVariable("itemId") Long itemId) {
+    public Page<CommentPageInfoDto> readAllReply(@PathVariable("itemId") Long itemId) {
         return commentService.getCommentsPaged(itemId);
     }
 
@@ -41,8 +42,8 @@ public class CommentController {
     // TODO: PUT /items/{itemId}/comments/{commentId}/reply
     @PutMapping("/comments/{commentId}/reply")
     public ResponseDto updateReply(@PathVariable("commentId") Long commentId,
-                                     @PathVariable("itemId") Long itemId,
-                                     @RequestBody CommentDto commentDto) {
+                                   @PathVariable("itemId") Long itemId,
+                                   @RequestBody CommentDto commentDto) {
         commentService.modifiedReply(commentId, itemId, commentDto);
         responseDto.setMessage("댓글에 답변이 추가되었습니다.");
         return responseDto;
@@ -51,8 +52,9 @@ public class CommentController {
     // TODO: DELETE /items/{itemId}/comments/{commentId}
     @DeleteMapping("/comments/{commentId}")
     public ResponseDto delete(@PathVariable("commentId") Long commentId,
-                                     @PathVariable("itemId") Long itemId) {
-        commentService.deleteComment(commentId, itemId);
+                              @PathVariable("itemId") Long itemId,
+                              @RequestBody CommentDto commentDto) {
+        commentService.deleteComment(commentId, itemId, commentDto);
         responseDto.setMessage("댓글을 삭제했습니다.");
         return responseDto;
     }
