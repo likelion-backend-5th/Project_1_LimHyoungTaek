@@ -1,4 +1,4 @@
-package com.be05.market.dto.salesitem;
+package com.be05.market.dto.mapping;
 
 import com.be05.market.entity.ItemEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PageInfoDto {
+public class ItemPageInfoDto {
     private Long id;
     private String title;
     private String description;
@@ -15,8 +15,8 @@ public class PageInfoDto {
     private String imageUrl;
     private String status;
 
-    public static PageInfoDto fromEntity(ItemEntity entity) {
-        PageInfoDto infoDto = new PageInfoDto();
+    public static ItemPageInfoDto fromEntity(ItemEntity entity) {
+        ItemPageInfoDto infoDto = new ItemPageInfoDto();
         infoDto.setId(entity.getId());
         infoDto.setTitle(entity.getTitle());
         infoDto.setDescription(entity.getDescription());
