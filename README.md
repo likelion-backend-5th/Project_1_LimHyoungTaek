@@ -12,6 +12,7 @@
 <summary>2023-06-29: Repository 생성, DTO 추가, SalesItem MVC 구조 </summary>
 <div markdown="1">
 
+---
 ### 2023-06-29
 **Create**: Git Repository - 'MiniProject_Basic_LimHyoungTaek'<br>
 
@@ -25,7 +26,8 @@
 **Add**:
 > - DTO(SalesItem, Negotiation, Comment)
 > - Controller, repository, entity, service associated (with SalesItem)
-> - 
+---
+<br>
 </div>
 </details>
 
@@ -35,9 +37,12 @@
 <summary>2023-06-30: ResponseDTO 추가, TODO 구현 </summary>
 <div markdown="1">
 
+---
 ### 2023-06-30
 **Add**:
 > - DTO(ResponseDto)
+
+<br>
 
 **TODO**:
 > POST /items<br>
@@ -45,7 +50,8 @@
 > GET /items/{itemId}<br>
 > PUT /items/{itemId}<br>
 > DELETE /items/{itemId}<br>
-
+---
+<br>
 </div>
 </details>
 
@@ -55,19 +61,22 @@
 <summary>2023-07-01: TODO [ PUT /items/{itemId}/image ] 구현 </summary>
 <div markdown="1">
 
+---
 ### 2023-07-01
 **TODO**:
 > PUT /items/{itemId}/image
-
+---
+<br>
 </div>
 </details>
 
 
 
 <details>
-<summary>2023-07-03: 1일차 - TODO 요구사항 구현 </summary>
+<summary>2023-07-03: DAY 1 / 중고 물품 관리 요구사항 </summary>
 <div markdown="1">
 
+---
 ### 2023-07-03
 **1. [POST] /items**<br>
 `ItemController.create()`, `ItemService.createItem()`<br>: 누구든지 중고 거래를 목적으로 물품에 대한 정보를 등록할 수 있다.<br>
@@ -121,5 +130,62 @@
 
 `ResponseDto`<br>: Controller의 Return Type을 ResponseDto로 수정 후 ResponseBody 출력 형식 message로 변경<br>
 
+`ContentinfoDto`<br>: `ItemController.readOne()`에서 모든 Column이 아닌 title, description, minPriceWanted, status만 보이게 Dto 설정<br>
+
+`PageinfoDto`<br>: `ItemController.readAll()`에서 모든 Column이 아닌 id, title, description, minPriceWanted, status만 보이게 Dto 설정<br>
+imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미출력<br>
+
+---
+<br>
+</div>
+</details>
+
+
+
+<details>
+<summary>2023-07-03: 중고 물품 댓글 MVC 구조 </summary>
+<div markdown="1">
+
+---
+### 2023-07-03
+**Add**:
+> - CommentController
+> - CommentEntity
+> - CommentRepository
+> - CommentService
+
+<br>
+
+**TODO**:
+> - POST /items/{itemId}/comments<br>
+> - GET /items/{itemId}/comments<br>
+> - PUT /items/{itemId}/comments/{commentId}<br>
+> - PUT /items/{itemId}/comments/{commentId}/reply<br>
+> - DELETE /items/{itemId}/comments/{commentId}<br>
+---
+<br>
+</div>
+</details>
+
+<details>
+<summary>2023-07-04: DAY 2 / 중고 물품 댓글 요구사항 </summary>
+<div markdown="1">
+
+---
+### 2023-07-04
+**1. [POST] /items/{itemId}/comments**<br>
+**2. [GET] /items/{itemId}/comments**<br>
+**3. [PUT] /items/{itemId}/comments/{commentId}**<br>
+**4. [PUT] /items/{itemId}/comments/{commentId}/reply**<br>
+**5. [DELETE] /items/{itemId}/comments/{commentId}**<br>
+**6. 그 외 추가 및 수정사항**<br>
+`PageinfoDto`<br>: `ItemPageInfoDto`, `CommentPageInfoDto`로 구분을 위해 자세하게 이름 설정<br>
+
+`PasswordValidatable`<br>: `validPW`를 `ItemEntity`와 `CommentEntity`에서 받을 수 있게 `interface`로 변경<br>
+
+`CommentService - validateCommentByItemId()`<br>: 각 메서드마다 요청 댓글 유무, 대상 댓글이 대상 게시글의 댓글인지 확인하는 과정이 겹쳐서 따로 분리<br>
+
+---
+<br>
 </div>
 </details>
