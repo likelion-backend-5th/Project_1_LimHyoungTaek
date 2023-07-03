@@ -1,4 +1,4 @@
-package com.be05.market.dto.salesitem;
+package com.be05.market.dto.mapping;
 
 import com.be05.market.dto.SalesItemDto;
 import lombok.Getter;
