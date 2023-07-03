@@ -1,8 +1,10 @@
 # **백엔드 스쿨 5기 미니 개인프로젝트 - ♻️멋사마켓♻️**
 
-
-요즘 사람들이 많이 사용하고 있는 🥕당근마켓, 중고나라 등의 중고 제품 거래 플랫폼을 만들어보는 미니 프로젝트입니다.<br>
-사용자가 중고 물품을 자유롭게 올리고, 댓글을 통해 소통하며, 최종적으로 구매 제안에 대하여 수락할 수 있는 형태의 중고 거래 플랫폼의 백엔드를 만들어봅시다.
+```
+요즘 사람들이 많이 사용하고 있는 🥕당근마켓, 중고나라 등의 중고 제품 거래 플랫폼을 만들어보는 미니 프로젝트입니다.
+사용자가 중고 물품을 자유롭게 올리고, 댓글을 통해 소통하며, 최종적으로 구매 제안에 대하여
+수락할 수 있는 형태의 중고 거래 플랫폼의 백엔드를 만들어봅시다.
+```
 
 <br>
 
@@ -130,9 +132,9 @@
 
 `ResponseDto`<br>: Controller의 Return Type을 ResponseDto로 수정 후 ResponseBody 출력 형식 message로 변경<br>
 
-`ContentinfoDto`<br>: `ItemController.readOne()`에서 모든 Column이 아닌 title, description, minPriceWanted, status만 보이게 Dto 설정<br>
+`ContentinfoDto`<br>: `ItemController.readOne()`에서 title, description, minPriceWanted, status만 보이게 Dto 설정<br>
 
-`PageinfoDto`<br>: `ItemController.readAll()`에서 모든 Column이 아닌 id, title, description, minPriceWanted, status만 보이게 Dto 설정<br>
+`PageinfoDto`<br>: `ItemController.readAll()`에서 id, title, description, minPriceWanted, status만 보이게 Dto 설정<br>
 imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미출력<br>
 
 ---
@@ -157,18 +159,18 @@ imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미�
 <br>
 
 **TODO**:
-> - POST /items/{itemId}/comments<br>
-> - GET /items/{itemId}/comments<br>
-> - PUT /items/{itemId}/comments/{commentId}<br>
-> - PUT /items/{itemId}/comments/{commentId}/reply<br>
-> - DELETE /items/{itemId}/comments/{commentId}<br>
+> POST /items/{itemId}/comments<br>
+> GET /items/{itemId}/comments<br>
+> PUT /items/{itemId}/comments/{commentId}<br>
+> PUT /items/{itemId}/comments/{commentId}/reply<br>
+> DELETE /items/{itemId}/comments/{commentId}<br>
 ---
 <br>
 </div>
 </details>
 
 <details>
-<summary>2023-07-04: DAY 2 / 중고 물품 댓글 요구사항 </summary>
+<summary>2023-07-04: DAY 2 / 중고 물품 댓글 요구사항 (나중에 채워 넣겠읍니다)</summary>
 <div markdown="1">
 
 ---
