@@ -1,5 +1,7 @@
 package com.be05.market.controller;
 
+import com.be05.market.dto.ContentInfoDto;
+import com.be05.market.dto.PageInfoDto;
 import com.be05.market.dto.ResponseDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.service.ItemService;
@@ -26,7 +28,7 @@ public class ItemController {
 
     // TODO: GET /items?page={page}&limit={limit}
     @GetMapping
-    public Page<SalesItemDto> readAll(
+    public Page<PageInfoDto> readAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit
     ) {
@@ -35,8 +37,9 @@ public class ItemController {
 
     // TODO: GET /items/{itemId}
     @GetMapping("/{itemId}")
-    public SalesItemDto readOne(@PathVariable("itemId") Long id) {
-        return itemService.read(id);
+    public ContentInfoDto readOne(@PathVariable("itemId") Long id) {
+        SalesItemDto itemDto = itemService.read(id);
+        return new ContentInfoDto(itemDto);
     }
 
     // TODO: PUT /items/{itemId}

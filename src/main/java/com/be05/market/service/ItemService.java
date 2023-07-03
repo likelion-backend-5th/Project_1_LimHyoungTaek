@@ -1,5 +1,6 @@
 package com.be05.market.service;
 
+import com.be05.market.dto.PageInfoDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.entity.ItemEntity;
 import com.be05.market.repository.ItemRepository;
@@ -39,11 +40,11 @@ public class ItemService {
     }
 
     // FindAll(Pages)
-    public Page<SalesItemDto> readItemsPaged(Integer page, Integer limit) {
+    public Page<PageInfoDto> readItemsPaged(Integer page, Integer limit) {
         Pageable pageable =
                 PageRequest.of(page, limit, Sort.by("id"));
         Page<ItemEntity> itemEntities = itemRepository.findAll(pageable);
-        return itemEntities.map(SalesItemDto::fromEntity);
+        return itemEntities.map(PageInfoDto::fromEntity);
     }
 
     // FindById
