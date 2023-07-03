@@ -50,7 +50,7 @@ public class CommentController {
 
     // TODO: DELETE /items/{itemId}/comments/{commentId}
     @DeleteMapping("/comments/{commentId}")
-    public ResponseDto deleteComment(@PathVariable("commentId") Long commentId,
+    public ResponseDto delete(@PathVariable("commentId") Long commentId,
                                      @PathVariable("itemId") Long itemId) {
         commentService.deleteComment(commentId, itemId);
         responseDto.setMessage("댓글을 삭제했습니다.");
