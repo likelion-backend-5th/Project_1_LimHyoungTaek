@@ -1,6 +1,6 @@
 package com.be05.market.service;
 
-import com.be05.market.dto.PageInfoDto;
+import com.be05.market.dto.salesitem.PageInfoDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.entity.ItemEntity;
 import com.be05.market.repository.ItemRepository;

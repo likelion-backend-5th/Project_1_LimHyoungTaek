@@ -1,4 +1,4 @@
-package com.be05.market.dto;
+package com.be05.market.dto.salesitem;
 
 import com.be05.market.entity.ItemEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;

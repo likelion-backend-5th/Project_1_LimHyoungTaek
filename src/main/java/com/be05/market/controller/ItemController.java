@@ -1,7 +1,7 @@
 package com.be05.market.controller;
 
-import com.be05.market.dto.ContentInfoDto;
-import com.be05.market.dto.PageInfoDto;
+import com.be05.market.dto.salesitem.ContentInfoDto;
+import com.be05.market.dto.salesitem.PageInfoDto;
 import com.be05.market.dto.ResponseDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.service.ItemService;

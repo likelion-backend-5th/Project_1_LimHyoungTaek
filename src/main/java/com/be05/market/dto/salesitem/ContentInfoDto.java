@@ -1,5 +1,6 @@
-package com.be05.market.dto;
+package com.be05.market.dto.salesitem;
 
+import com.be05.market.dto.SalesItemDto;
 import lombok.Getter;
 import lombok.Setter;
 
