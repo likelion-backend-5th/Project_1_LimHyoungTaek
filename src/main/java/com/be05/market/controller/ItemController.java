@@ -5,7 +5,9 @@ import com.be05.market.dto.SalesItem;
 import com.be05.market.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/items")
@@ -15,7 +17,7 @@ public class ItemController {
     private final ResponseDto responseDto = new ResponseDto();
 
     // TODO: POST /items
-    @PostMapping("")
+    @PostMapping
     public ResponseDto create(@RequestBody SalesItem items) {
         itemService.createItem(items);
         responseDto.setMessage("등록이 완료되었습니다.");
@@ -47,6 +49,16 @@ public class ItemController {
     }
 
     // TODO: PUT /items/{itemId}/image
+    @PutMapping(
+            value = "/{itemId}/image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseDto uploadImage(@PathVariable Long itemId,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("image") MultipartFile itemFile) {
+        itemService.uploadItemImage(itemId, password, itemFile);
+        responseDto.setMessage("이미지가 등록되었습니다.");
+        return responseDto;
+    }
 
     // TODO: DELETE /items/{itemId}
     @DeleteMapping("/{itemId}")
