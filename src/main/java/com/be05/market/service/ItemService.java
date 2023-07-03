@@ -56,30 +56,21 @@ public class ItemService {
 
     // Update
     public void updateItem(Long id, SalesItem item) {
-        Optional<ItemEntity> optionalItem = itemRepository.findById(id);
-        if (optionalItem.isPresent()) {
-            ItemEntity itemEntity = optionalItem.get();
+        ItemEntity itemEntity = getItemById(id); // Import item entities with ID
+        validPW(itemEntity, item.getPassword()); // Check Password
 
-            // Check Password
-            if (itemEntity.getPassword().equals(item.getPassword())) {
-                itemEntity.setTitle(item.getTitle());
-                itemEntity.setDescription(item.getDescription());
-                itemEntity.setMinPriceWanted(item.getMinPriceWanted());
-                itemRepository.save(itemEntity);
-            } else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
-        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        itemEntity.setTitle(item.getTitle());
+        itemEntity.setDescription(item.getDescription());
+        itemEntity.setMinPriceWanted(item.getMinPriceWanted());
+        itemRepository.save(itemEntity);
+
     }
 
     // Upload Image
     public void uploadItemImage(Long id, String password, MultipartFile itemFile) {
         // 0. Handling Exceptions
-        Optional<ItemEntity> optionalItem = itemRepository.findById(id);
-        if (optionalItem.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        ItemEntity itemEntity = optionalItem.get();
-        if (!itemEntity.getPassword().equals(password)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        ItemEntity itemEntity = getItemById(id);
+        validPW(itemEntity, password);
 
         // 1. create folder
         String itemDirPath = String.format("images/%d/", id);
@@ -118,17 +109,23 @@ public class ItemService {
 
     // Delete
     public void deleteItem(Long id, SalesItem item) {
-        Optional<ItemEntity> optionalItem = itemRepository.findById(id);
-        if (optionalItem.isPresent()) {
-            ItemEntity itemEntity = optionalItem.get();
+        ItemEntity itemEntity = getItemById(id);
+        validPW(itemEntity, item.getPassword());
 
-            if (itemEntity.getPassword().equals(item.getPassword())) {
-                if (itemRepository.existsById(id)) {
-                    itemRepository.deleteById(id);
-                }
-                else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-            }
-        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (itemRepository.existsById(id)) itemRepository.deleteById(id);
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
 
+    // Import item entities with ID
+    public ItemEntity getItemById(Long id) {
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    // Check Password
+    private void validPW(ItemEntity itemEntity, String password) {
+        if (!itemEntity.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+        }
     }
 }
