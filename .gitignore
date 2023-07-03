@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# add sql, image dir
+*.sql
+*.sqlite
+/images
