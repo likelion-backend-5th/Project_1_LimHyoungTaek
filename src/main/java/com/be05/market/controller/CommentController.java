@@ -28,7 +28,6 @@ public class CommentController {
         return commentService.getCommentsPaged(itemId);
     }
 
-
     // TODO: PUT /items/{itemId}/comments/{commentId}
     // TODO: PUT /items/{itemId}/comments/{commentId}/reply
     // TODO: DELETE /items/{itemId}/comments/{commentId}
