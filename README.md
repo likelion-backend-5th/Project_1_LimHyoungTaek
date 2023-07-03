@@ -32,12 +32,10 @@
 **Add**:
 > - DTO(ResponseDto)
 
-**Implemented [TODO]**:
-
+**TODO**:
 > POST /items<br>
 > GET /items?page={page}&limit={limit}<br>
 > GET /items/{itemId}<br>
 > PUT /items/{itemId}<br>
 > DELETE /items/{itemId}<br>
-> PUT /items/{itemId}/image <- ~~i'll do laterㅎㅎ~~
-<br>+ 나중에 링크
+> PUT /items/{itemId}/image
