@@ -1,7 +1,7 @@
 package com.be05.market.controller;
 
-import com.be05.market.dto.salesitem.ContentInfoDto;
-import com.be05.market.dto.salesitem.PageInfoDto;
+import com.be05.market.dto.mapping.ContentInfoDto;
+import com.be05.market.dto.mapping.ItemPageInfoDto;
 import com.be05.market.dto.ResponseDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.service.ItemService;
@@ -28,7 +28,7 @@ public class ItemController {
 
     // TODO: GET /items?page={page}&limit={limit}
     @GetMapping
-    public Page<PageInfoDto> readAll(
+    public Page<ItemPageInfoDto> readAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit
     ) {
