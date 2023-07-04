@@ -6,7 +6,52 @@
 수락할 수 있는 형태의 중고 거래 플랫폼의 백엔드를 만들어봅시다.
 ```
 
-<br>
+<br><br>
+
+## 📁 REST API
+### 1. 물품 관리
+<details>
+<summary><b><u>중고 물품 관리 API</u></b></summary><br>
+
+<details><summary>1️⃣</summary></details>
+<details><summary>2️⃣</summary></details>
+<details><summary>3️⃣</summary></details>
+<details><summary>4️⃣</summary></details>
+<details><summary>5️⃣</summary></details>
+<details><summary>6️⃣</summary></details>
+<details><summary>7️⃣</summary></details>
+
+</details>
+
+### 2. 물품 댓글
+<details>
+<summary><b><u>중고 물품 댓글 API</u></b></summary><br>
+
+<details><summary>1️⃣</summary></details>
+<details><summary>2️⃣</summary></details>
+<details><summary>3️⃣</summary></details>
+<details><summary>4️⃣</summary></details>
+<details><summary>5️⃣</summary></details>
+<details><summary>6️⃣</summary></details>
+<details><summary>7️⃣</summary></details>
+
+</details>
+
+### 3. 구매 제안
+<details>
+<summary><b><u>구매 제안</u></b></summary><br>
+
+<details><summary>1️⃣</summary></details>
+<details><summary>2️⃣</summary></details>
+<details><summary>3️⃣</summary></details>
+<details><summary>4️⃣</summary></details>
+<details><summary>5️⃣</summary></details>
+<details><summary>6️⃣</summary></details>
+<details><summary>7️⃣</summary></details>
+
+</details>
+
+<br><br>
 
 ## 📜 History
 
