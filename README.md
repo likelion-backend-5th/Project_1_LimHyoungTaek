@@ -1,4 +1,4 @@
-# <span style="color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">**백엔드 스쿨 5기 미니 개인프로젝트 - ♻️멋사마켓♻️**</span>
+# **백엔드 스쿨 5기 미니 개인프로젝트 - ♻️멋사마켓♻️**
 
 ```
 요즘 사람들이 많이 사용하고 있는 🥕당근마켓, 중고나라 등의 중고 제품 거래 플랫폼을 만들어보는 미니 프로젝트입니다.
@@ -8,11 +8,10 @@
 
 <br>
 
-## 📜 <span style="color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">History</span>
+## 📜 History
 
 <details>
-<summary style="font-size: 16px; color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
-✨ <u><b>2023-06-29</b></u>: Repository 생성, DTO 추가, SalesItem MVC 구조</summary>
+<summary>✨ <u><b>2023-06-29</b></u>: Repository 생성, DTO 추가, SalesItem MVC 구조</summary>
 
 ---
 ### 2023-06-29
@@ -34,8 +33,7 @@
 
 
 <details>
-<summary style="font-size: 16px; color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
-✨ <u><b>2023-06-30</b></u>: ResponseDTO 추가, TODO 구현</summary>
+<summary>✨ <u><b>2023-06-30</b></u>: ResponseDTO 추가, TODO 구현</summary>
 
 ---
 ### 2023-06-30
@@ -56,8 +54,7 @@
 
 
 <details>
-<summary style="font-size: 16px; color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
-✨ <u><b>2023-07-01</b></u>: TODO [ PUT /items/{itemId}/image ] 구현</summary>
+<summary>✨ <u><b>2023-07-01</b></u>: TODO [ PUT /items/{itemId}/image ] 구현</summary>
 
 ---
 ### 2023-07-01
@@ -69,14 +66,13 @@
 
 
 <details>
-<summary style="font-size: 16px; color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
-✨ <u><b>2023-07-03</b></u>: DAY 1 / 중고 물품 관리 요구사항, 중고 물품 댓글 MVC 구조</summary>
+<summary>✨ <u><b>2023-07-03</b></u>: DAY 1 / 중고 물품 관리 요구사항, 중고 물품 댓글 MVC 구조</summary>
 
 ---
 ### 2023-07-03
 
 <details>
-<summary style="font-size: 16px"><u><b>DAY 1 / 중고 물품 관리 요구사항</b></u></summary>
+<summary><u><b>DAY 1 / 중고 물품 관리 요구사항</b></u></summary>
 
 **1️⃣ <u>[POST] /items</u>**<br>
 `ItemController.create()`, `ItemService.createItem()`<br>: 누구든지 중고 거래를 목적으로 물품에 대한 정보를 등록할 수 있다.<br>
@@ -141,7 +137,7 @@ imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미�
 
 
 <details>
-<summary style="font-size: 16px"><u><b>중고 물품 댓글 MVC 구조</b></u></summary>
+<summary><u><b>중고 물품 댓글 MVC 구조</b></u></summary>
 
 **Add**:
 > - CommentController
@@ -166,8 +162,7 @@ imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미�
 
 
 <details>
-<summary style="font-size: 16px; color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
-✨ <u><b>2023-07-04</b></u>: DAY 2 / 중고 물품 댓글 요구사항</summary>
+<summary>✨ <u><b>2023-07-04</b></u>: DAY 2 / 중고 물품 댓글 요구사항</summary>
 
 ---
 ### 2023-07-04
@@ -260,14 +255,13 @@ public class CommentService {
 
 
 <details>
-<summary style="font-size: 16px; color: ghostwhite; text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;">
-✨ <u><b>2023-07-04</b></u>: DAY 3 / 구매 제한 요구사항 (수정중)</summary>
+<summary>✨ <u><b>2023-07-04</b></u>: DAY 3 / 구매 제한 요구사항 (수정중)</summary>
 
 ---
 ### 2023-07-04
 
 <details>
-<summary style="font-size: 16px"><u><b>중고 물품 댓글 MVC 구조</b></u></summary>
+<summary><u><b>중고 물품 댓글 MVC 구조</b></u></summary>
 
 **Add**:
 > - Controller
