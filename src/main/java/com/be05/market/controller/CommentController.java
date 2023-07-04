@@ -25,7 +25,7 @@ public class CommentController {
     }
     // TODO: GET /items/{itemId}/comments
     @GetMapping("/comments")
-    public Page<CommentPageInfoDto> readAllReply(@PathVariable("itemId") Long itemId) {
+    public Page<CommentPageInfoDto> readAllComment(@PathVariable("itemId") Long itemId) {
         return commentService.getCommentsPaged(itemId);
     }
 
