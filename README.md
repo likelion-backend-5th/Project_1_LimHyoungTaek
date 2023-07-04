@@ -28,14 +28,12 @@
 > - DTO(SalesItem, Negotiation, Comment)
 > - Controller, repository, entity, service associated (with SalesItem)
 ---
-<br>
 </details>
 
 
 
 <details>
 <summary>2023-06-30: ResponseDTO 추가, TODO 구현 </summary>
-<div markdown="1">
 
 ---
 ### 2023-06-30
@@ -51,37 +49,30 @@
 > PUT /items/{itemId}<br>
 > DELETE /items/{itemId}<br>
 ---
-<br>
-</div>
 </details>
 
 
 
 <details>
 <summary>2023-07-01: TODO [ PUT /items/{itemId}/image ] 구현 </summary>
-<div markdown="1">
 
 ---
 ### 2023-07-01
 **TODO**:
 > PUT /items/{itemId}/image
 ---
-<br>
-</div>
 </details>
 
 
 
 <details>
 <summary>2023-07-03: DAY 1 / 중고 물품 관리 요구사항, 중고 물품 댓글 MVC 구조 </summary>
-<div markdown="1">
 
 ---
 ### 2023-07-03
 
 <details>
 <summary>2023-07-03: DAY 1 / 중고 물품 관리 요구사항 </summary>
-<div markdown="1">
 
 **1. [POST] /items**<br>
 `ItemController.create()`, `ItemService.createItem()`<br>: 누구든지 중고 거래를 목적으로 물품에 대한 정보를 등록할 수 있다.<br>
@@ -141,14 +132,12 @@
 imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미출력<br>
 
 <br>
-</div>
 </details>
 
 
 
 <details>
 <summary>2023-07-03: 중고 물품 댓글 MVC 구조 </summary>
-<div markdown="1">
 
 **Add**:
 > - CommentController
@@ -165,18 +154,15 @@ imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미�
 > PUT /items/{itemId}/comments/{commentId}/reply<br>
 > DELETE /items/{itemId}/comments/{commentId}<br>
 
-</div>
 </details>
 
 ---
-</div>
 </details>
 
 
 
 <details>
 <summary>2023-07-04: DAY 2 / 중고 물품 댓글 요구사항</summary>
-<div markdown="1">
 
 ---
 ### 2023-07-04
@@ -219,34 +205,37 @@ imageUrl -> add @JsonInclude(JsonInclude.Include.NON_NULL) Null 값 일때 미�
 
 <details>
 <summary> CommentService.java - modifiedReply() </summary>
-<div markdown="1">
 
 ```java
-// Post, Modifying Reply
-public void modifiedReply(Long commentId, Long itemId, CommentDto comments)
-{
-    CommentEntity commentEntity = validateCommentByItemId(commentId, itemId);
-    ItemEntity itemEntity = itemService.getItemById(itemId);
+public class CommentService {
+    private final ItemRepository itemRepository;
+    private final ItemService itemService;
+    private final CommentRepository commentRepository;
 
-    // 1. 답글 작성자 != 물품 등록 작성자 -> 예외 처리
-    // 댓글에 답글을 달 수 있는 사용자는 물품 정보를 등록한 사용자 뿐
-    if(!itemEntity.getWriter().equals(comments.getWriter()))
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    // Post, Modifying Reply
+    public void modifiedReply(Long commentId, Long itemId, CommentDto comments) {
+        CommentEntity commentEntity = validateCommentByItemId(commentId, itemId);
+        ItemEntity itemEntity = itemService.getItemById(itemId);
 
-    // 2. 물품 등록 작성자 == 답글 작성자 라는건 위의 예외에서 증명
-    // 만약 댓글이 등록된 대상 물품을 등록한 사람일 경우
-    // -> 물품 등록 == 댓글 == 답글 다 같은 작성자이다.
-    if (commentEntity.getWriter().equals(comments.getWriter())){
-        // 물품을 등록할 때 사용한 비밀번호를 첨부할 경우 답글 항목을 수정할 수 있다.
-        // 물품 등록 비밀번호 != 답글 비밀번호 -> 예외 처리
-        itemEntity.validatePassword(comments.getPassword());
+        // 1. 답글 작성자 != 물품 등록 작성자 -> 예외 처리
+        // 댓글에 답글을 달 수 있는 사용자는 물품 정보를 등록한 사용자 뿐
+        if (!itemEntity.getWriter().equals(comments.getWriter()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        // 2. 물품 등록 작성자 == 답글 작성자 라는건 위의 예외에서 증명
+        // 만약 댓글이 등록된 대상 물품을 등록한 사람일 경우
+        // -> 물품 등록 == 댓글 == 답글 다 같은 작성자이다.
+        if (commentEntity.getWriter().equals(comments.getWriter())) {
+            // 물품을 등록할 때 사용한 비밀번호를 첨부할 경우 답글 항목을 수정할 수 있다.
+            // 물품 등록 비밀번호 != 답글 비밀번호 -> 예외 처리
+            itemEntity.validatePassword(comments.getPassword());
+        }
+        // Save Reply
+        commentEntity.setReply(comments.getReply());
+        CommentDto.fromEntity(commentRepository.save(commentEntity));
     }
-
-    commentEntity.setReply(comments.getReply());
-    CommentDto.fromEntity(commentRepository.save(commentEntity));
 }
 ```
-</div>
 </details>
 
 <br>
@@ -260,5 +249,4 @@ public void modifiedReply(Long commentId, Long itemId, CommentDto comments)
 
 ---
 <br>
-</div>
 </details>
