@@ -13,13 +13,13 @@
 <details>
 <summary><b><u>중고 물품 관리 API</u></b></summary><br>
 
-<details><summary>1️⃣</summary></details>
-<details><summary>2️⃣</summary></details>
-<details><summary>3️⃣</summary></details>
-<details><summary>4️⃣</summary></details>
-<details><summary>5️⃣</summary></details>
-<details><summary>6️⃣</summary></details>
-<details><summary>7️⃣</summary></details>
+<details><summary> 1️⃣ </summary></details>
+<details><summary> 2️⃣ </summary></details>
+<details><summary> 3️⃣ </summary></details>
+<details><summary> 4️⃣ </summary></details>
+<details><summary> 5️⃣ </summary></details>
+<details><summary> 6️⃣ </summary></details>
+<details><summary> 7️⃣ </summary></details>
 
 </details>
 
@@ -27,27 +27,27 @@
 <details>
 <summary><b><u>중고 물품 댓글 API</u></b></summary><br>
 
-<details><summary>1️⃣</summary></details>
-<details><summary>2️⃣</summary></details>
-<details><summary>3️⃣</summary></details>
-<details><summary>4️⃣</summary></details>
-<details><summary>5️⃣</summary></details>
-<details><summary>6️⃣</summary></details>
-<details><summary>7️⃣</summary></details>
+<details><summary> 1️⃣ </summary></details>
+<details><summary> 2️⃣ </summary></details>
+<details><summary> 3️⃣ </summary></details>
+<details><summary> 4️⃣ </summary></details>
+<details><summary> 5️⃣ </summary></details>
+<details><summary> 6️⃣ </summary></details>
+<details><summary> 7️⃣ </summary></details>
 
 </details>
 
 ### 3. 구매 제안
 <details>
-<summary><b><u>구매 제안</u></b></summary><br>
+<summary><b><u>구매 제안 API</u></b></summary><br>
 
-<details><summary>1️⃣</summary></details>
-<details><summary>2️⃣</summary></details>
-<details><summary>3️⃣</summary></details>
-<details><summary>4️⃣</summary></details>
-<details><summary>5️⃣</summary></details>
-<details><summary>6️⃣</summary></details>
-<details><summary>7️⃣</summary></details>
+<details><summary> 1️⃣ </summary></details>
+<details><summary> 2️⃣ </summary></details>
+<details><summary> 3️⃣ </summary></details>
+<details><summary> 4️⃣ </summary></details>
+<details><summary> 5️⃣ </summary></details>
+<details><summary> 6️⃣ </summary></details>
+<details><summary> 7️⃣ </summary></details>
 
 </details>
 
