@@ -13,15 +13,87 @@
 <details>
 <summary><b><u>중고 물품 관리 API</u></b></summary><br>
 
-<details><summary> 1️⃣ </summary></details>
-<details><summary> 2️⃣ </summary></details>
-<details><summary> 3️⃣ </summary></details>
-<details><summary> 4️⃣ </summary></details>
-<details><summary> 5️⃣ </summary></details>
-<details><summary> 6️⃣ </summary></details>
-<details><summary> 7️⃣ </summary></details>
+<details><summary> 1️⃣ POST /items </summary>
+
+Request Body:
+```
+{
+    "writer": "lim123",
+    "title": "중고 맥북 팝니다",
+    "description": "2019년 맥북 프로 13인치 모델입니다",
+    "minPriceWanted": 1000000,
+    "password": "1qaz2wsx"
+}
+```
+
+Response Body:
+
+![create_item](readme_img/r1.png)
 
 </details>
+
+<details><summary> 2️⃣ GET /items?page={page}&limit={limit} </summary>
+
+Response Body:
+
+![viewall_item](readme_img/r2.png)
+
+</details>
+
+<details><summary> 3️⃣ GET /items/{itemId} </summary>
+
+Response Body:
+
+![viewone_item](readme_img/r3.png)
+
+</details>
+
+
+<details><summary> 4️⃣ PUT /items/{itemId} </summary>
+
+Request Body:
+```
+{
+    "title": "응 안팔아",
+    "description": "걍 내가 쓸꺼야",
+    "password": "1qaz2wsx",
+    "minPriceWanted": 5000000
+}
+```
+
+Response Body:
+
+![update_item](readme_img/r4.png)
+
+</details>
+
+
+<details><summary> 5️⃣ PUT /items/{itemId}/image </summary>
+
+Request Body & Response Body:
+
+![image_item](readme_img/r5.png)
+
+</details>
+<details><summary> 6️⃣ DELETE /items/{itemId} </summary>
+
+Request Body:
+```
+{
+    "writer": "lim123",
+    "password": "1qaz2wsx"
+}
+```
+
+Response Body:
+
+![delete_item](readme_img/r6.png)
+
+</details>
+
+</details>
+
+<br><br>
 
 ### 2. 물품 댓글
 <details>
