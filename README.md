@@ -13,7 +13,7 @@
 <details>
 <summary><b><u>중고 물품 관리 API</u></b></summary><br>
 
-<details><summary> 1️⃣ POST /items </summary>
+<details><summary> 1. POST /items </summary>
 
 Request Body:
 ```json
@@ -32,7 +32,7 @@ Response Body:
 
 </details>
 
-<details><summary> 2️⃣ GET /items?page={page}&limit={limit} </summary>
+<details><summary> 2. GET /items?page={page}&limit={limit} </summary>
 
 Response Body:
 
@@ -40,7 +40,7 @@ Response Body:
 
 </details>
 
-<details><summary> 3️⃣ GET /items/{itemId} </summary>
+<details><summary> 3. GET /items/{itemId} </summary>
 
 Response Body:
 
@@ -49,7 +49,7 @@ Response Body:
 </details>
 
 
-<details><summary> 4️⃣ PUT /items/{itemId} </summary>
+<details><summary> 4. PUT /items/{itemId} </summary>
 
 Request Body:
 ```json
@@ -68,14 +68,14 @@ Response Body:
 </details>
 
 
-<details><summary> 5️⃣ PUT /items/{itemId}/image </summary>
+<details><summary> 5. PUT /items/{itemId}/image </summary>
 
 Request Body & Response Body:
 
 ![image_item](readme_img/r5.png)
 
 </details>
-<details><summary> 6️⃣ DELETE /items/{itemId} </summary>
+<details><summary> 6. DELETE /items/{itemId} </summary>
 
 Request Body:
 ```json
@@ -91,15 +91,13 @@ Response Body:
 
 </details>
 
-<br><br>
-
 </details>
 
 ### 2. 물품 댓글
 <details>
 <summary><b><u>중고 물품 댓글 API</u></b></summary><br>
 
-<details><summary> 1️⃣ POST /items/{itemId}/comments </summary>
+<details><summary> 1. POST /items/{itemId}/comments </summary>
 
 Request Body:
 ```json
@@ -115,7 +113,7 @@ Response Body:
 ![img](readme_img/c1.png)
 
 </details>
-<details><summary> 2️⃣ GET /items/{itemId}/comments </summary>
+<details><summary> 2. GET /items/{itemId}/comments </summary>
 
 Request Body:
 ```json
@@ -131,7 +129,7 @@ Response Body:
 ![img](readme_img/c2.png)
 
 </details>
-<details><summary> 3️⃣ PUT /items/{itemId}/comments/{commentId} </summary>
+<details><summary> 3. PUT /items/{itemId}/comments/{commentId} </summary>
 
 Request Body:
 ```json
@@ -147,7 +145,7 @@ Response Body:
 ![img](readme_img/c3.png)
 
 </details>
-<details><summary> 4️⃣ PUT /items/{itemId}/comments/{commentId}/reply </summary>
+<details><summary> 4. PUT /items/{itemId}/comments/{commentId}/reply </summary>
 
 Request Body:
 ```json
@@ -163,7 +161,7 @@ Response Body:
 ![img](readme_img/c4.png)
 
 </details>
-<details><summary> 5️⃣ DELETE /items/{itemId}/comments/{commentId} </summary>
+<details><summary> 5. DELETE /items/{itemId}/comments/{commentId} </summary>
 
 Request Body:
 ```json
@@ -179,13 +177,11 @@ Response Body:
 
 </details>
 
-<details><summary> 6️⃣ 답글은 물품 등록 작성자를 제외하고는 달 수 없다. </summary>
+<details><summary> 6. 답글은 물품 등록 작성자를 제외하고는 달 수 없다. </summary>
 
 ![img](readme_img/c6.png)
 
 </details>
-
-<br><br>
 
 </details>
 
@@ -193,7 +189,7 @@ Response Body:
 <details>
 <summary><b><u>구매 제안 API</u></b></summary><br>
 
-<details><summary> 1️⃣ POST /items/{itemId}/proposals </summary>
+<details><summary> 1. POST /items/{itemId}/proposals </summary>
 
 Request Body:
 ```json
@@ -209,14 +205,14 @@ Response Body:
 ![img](readme_img/p1.png)
 
 </details>
-<details><summary> 2️⃣ http://localhost:8080/items/1/proposal?writer=lim123&password=1qaz2wsx&page=1 </summary>
+<details><summary> 2. http://localhost:8080/items/1/proposal?writer=lim123&password=1qaz2wsx&page=1 </summary>
 
 Response Body:
 
 ![img](readme_img/p2.png)
 
 </details>
-<details><summary> 3️⃣ PUT /items/{itemId}/proposals/{proposalId} </summary>
+<details><summary> 3. PUT /items/{itemId}/proposals/{proposalId} </summary>
 
 Request Body:
 ```json
@@ -232,7 +228,7 @@ Response Body:
 ![img](readme_img/p3.png)
 
 </details>
-<details><summary> 4️⃣ DELETE /items/{itemId}/proposals/{proposalId} </summary>
+<details><summary> 4. DELETE /items/{itemId}/proposals/{proposalId} </summary>
 
 Request Body:
 ```json
@@ -247,7 +243,7 @@ Response Body:
 ![img](readme_img/p4.png)
 
 </details>
-<details><summary> 5️⃣ PUT /items/{itemId}/proposals/{proposalId} </summary>
+<details><summary> 5. PUT /items/{itemId}/proposals/{proposalId} </summary>
 
 Request Body:
 ```json
@@ -263,7 +259,7 @@ Response Body:
 ![img](readme_img/p5.png)
 
 </details>
-<details><summary> 6️⃣ PUT /items/{itemId}/proposals/{proposalId} </summary>
+<details><summary> 6. PUT /items/{itemId}/proposals/{proposalId} </summary>
 
 Request Body:
 ```json
@@ -280,7 +276,19 @@ Response Body:
 
 </details>
 
-<details><summary> 7️⃣ </summary></details>
+<details><summary> 7. 그 외 </summary>
+
+**PUT /items/{itemId}/proposals/{proposalId}**
+
+- 3번의 PUT(제안 가격 변경)의 경우 구매 제안 작성자만 수정이 가능하며, status가 "제안", SuggestedPrice가 null이 아닐 때만 작동한다.
+- 5번의 PUT(수락, 거절)의 경우 물품 등록 작성자만 수정 가능하며, 상태가 수락, 거절이 되었을 경우 구매 제안 작성자는 글을 수정할 수 없다.
+- 6번의 PUT(구매 확정)의 경우 구매 제안 작성자만 수정이 가능하며, 현재 "수락" 상태이고 Request로 받는 status가 "확정"이면 status는 "확정"으로 변한다.
+
+    물품 등록 게시물 또한 "판매 완료"가 된다. 이 상태에서 게시물, 구매 제안을 지울 수 없다. 
+    
+    또한 자동으로 모든 구매제안은 "거절" 상태가 된다.
+
+</details>
 
 </details>
 
