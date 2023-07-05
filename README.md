@@ -250,7 +250,7 @@ Request Body:
 {
     "writer": "lim123",
     "password": "1qaz2wsx",
-    "status": "거절" // 수락도 됩니다.
+    "status": "거절"
 }
 ```
 
@@ -541,19 +541,19 @@ public class CommentService {
 
 
 <details>
-<summary>✨ <u><b>2023-07-04</b></u>: DAY 3 / 구매 제한 요구사항 (수정중)</summary>
+<summary>✨ <u><b>2023-07-04</b></u>: DAY 3 / 구매 제안 기본 CRUD 구조 생성</summary>
 
 ---
 ### 2023-07-04
 
-<details>
-<summary><u><b>중고 물품 댓글 MVC 구조</b></u></summary>
+**구매 제안 기본 CRUD 구조 생성**
 
 **Add**:
-> - Controller
-> - Entity
-> - Repository
-> - Service
+> - ProposalController
+> - ProposalEntity
+> - ProposalRepository
+> - ProposalService
+> - ProposalPageInfoDto
 
 <br>
 
@@ -564,8 +564,73 @@ public class CommentService {
 > DELETE /items/{itemId}/proposals/{proposalId}<br>
 > PUT /items/{itemId}/proposals/{proposalId}<br>
 
+---
+<br>
 </details>
 
+
+<details>
+<summary>✨ <u><b>2023-07-05</b></u>: DAY 3 / 구매 제안 요구사항</summary>
+
 ---
+### 2023-07-05
+
+**중고 물품 댓글 MVC 구조**
+
+**1️⃣ <u>[POST] /items/{itemId}/proposals</u>**<br>
+`ProposalController.createProposal()`, `ProposalService.postOffer()`<br>: 등록된 물품에 대하여 구매 제안을 등록할 수 있다.<br>
+
+`NegotiationDto - @NotNull`<br>: 이때 반드시 포함되어야 하는 내용은 대상 물품, 제안 가격, 작성자이다.<br> 참고로 이전에 Entity에 붙어있던 `@NotNull`은 다 Dto로 이동함.<br>
+
+`PasswordValidatable.validatePassword()`, `ProposalEntity - @Override`<br>: 또한 구매 제안을 등록할 때, 비밀번호 항목을 추가해서 등록한다.<br>
+
+`ProposalService.postOffer() - newProposal.setStatus("제안");`<br>: 구매 제안이 등록될 때, 제안의 상태는 제안 상태가 된다.<br>
+
+<br><br>
+
+**2️⃣ <u>[GET] /items/{itemId}/proposal?writer=lim123&password=1qaz2wsx&page=1</u>**<br>
+`ProposalController.readAllProposal()`<br>: 구매 제안은 대상 물품의 주인과 등록한 사용자만 조회할 수 있다.<br>
+
+`ProposalService.findPagedOffer()`, `ProposalRepository.findAll()`<br>: 대상 물품의 주인은, 대상 물품을 등록할 때 사용한 작성자와 비밀번호를 첨부해야 한다.<br>이때 물품에 등록된 모든 구매 제안이 확인 가능하다.<br>
+
+`ProposalService.findPagedOffer()`, `ProposalRepository.findAllByItemIdAndWriter()`<br>: 등록한 사용자는, 조회를 위해서 자신이 사용한 작성자와 비밀번호를 첨부해야 한다. <br>이때 자신이 등록한 구매 제안만 확인이 가능하다.<br>
+
+`ProposalService.findPagedOffer()`<br>: 페이지 기능을 지원한다.<br>
+
+<br><br>
+
+**3️⃣ <u>[PUT] /items/{itemId}/proposals/{proposalId}</u>**<br>
+
+**1. 구매 제안 작성자의 가격 수정**<br>
+`ProposalController.updateProposal()`, `ProposalService.putUpdateOffer()`<br>: 등록된 제안은 수정이 가능하다.<br>
+
+`PasswordValidatable.validatePassword()`, `ProposalEntity - @Override`<br>: 이때, 제안이 등록될때 추가한 작성자와 비밀번호를 첨부해야 한다.<br>
+
+<br><br>
+
+**2. 물품 등록자의 구매 제안 수락, 거절 상태 변경**<br>
+`ProposalService.{putUpdateOffer(), acceptRejectOffer()}`<br>: 대상 물품의 주인은 구매 제안을 수락할 수 있다. <br>또한, 대상 물품의 주인은 구매 제안을 거절할 수 있다. 각각 구매 제안의 상태는 수락/거절이 된다.<br>
+
+`PasswordValidatable.validatePassword()`, `ProposalEntity - @Override`<br>: 이때, 제안이 등록될때 추가한 작성자와 비밀번호를 첨부해야 한다.<br>
+
+<br><br>
+
+**3. 구매 제안 작성자의 구매 확정 상태 변경**<br>
+`ProposalService.putUpdateOffer()` - `2) 현재 "수락" 상태 & Request "확정" 상태 -> 판매 완료` 부분<br>
+<br>1) 구매 제안을 등록한 사용자는, 자신이 등록한 제안이 수락 상태일 경우, 구매 확정을 할 수 있다.<br>
+<br>2) 이때 구매 제안의 상태는 확정 상태가 된다.<br>
+<br>3) 구매 제안이 확정될 경우, 대상 물품의 상태는 판매 완료가 된다.<br>참고로 확정, 판매 완료 상태의 구매 제안과 게시물은 작성자일지라도 삭제하지 못한다.<br>
+
+`ProposalService.putUpdateOffer()` 작성자 확인 부분,<br>`PasswordValidatable.validatePassword()`, `ProposalEntity - @Override` 비밀번호 확인 부분<br>: 이를 위해서 제안을 등록할 때 사용한 작성자와 비밀번호를 첨부해야 한다.<br>
+
+<br><br>
+
+**4️⃣ <u>[DELETE] /items/{itemId}/proposals/{proposalId}</u>**<br>
+`ProposalController.delete()`, `ProposalService.deleteOffer()`<br>: 등록된 제안은 수정이 가능하다.<br>
+
+`PasswordValidatable.validatePassword()`, `ProposalEntity - @Override`<br>: 이때, 제안이 등록될때 추가한 작성자와 비밀번호를 첨부해야 한다.<br>
+
+↳ 이 부분은 아래 토글을 열어 코드를 참고해주세요.
+
 <br>
 </details>
