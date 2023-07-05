@@ -112,7 +112,8 @@ public class ItemService {
     public void deleteItem(Long id, SalesItemDto item) {
         ItemEntity itemEntity = getItemById(id);
         itemEntity.validatePassword(item.getPassword());
-
+        if (itemEntity.getStatus().equals("판매 완료")) // 판매 완료인데 지우려고 할 경우
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         if (itemRepository.existsById(id)) itemRepository.deleteById(id);
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
