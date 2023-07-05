@@ -115,15 +115,6 @@ Response Body:
 </details>
 <details><summary> 2. GET /items/{itemId}/comments </summary>
 
-Request Body:
-```json
-{
-    "writer": "lim123",
-    "password": "1qaz2wsx",
-    "reply": "ㄴㄴ안됨"
-}
-```
-
 Response Body:
 
 ![img](readme_img/c2.png)
@@ -205,7 +196,7 @@ Response Body:
 ![img](readme_img/p1.png)
 
 </details>
-<details><summary> 2. http://localhost:8080/items/1/proposal?writer=lim123&password=1qaz2wsx&page=1 </summary>
+<details><summary> 2. GET http://localhost:8080/items/1/proposal?writer=lim123&password=1qaz2wsx&page=1 </summary>
 
 Response Body:
 
