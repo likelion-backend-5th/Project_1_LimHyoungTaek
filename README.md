@@ -294,7 +294,7 @@ Response Body:
 
 <br><br>
 
-## 📜 History
+## 📜 History (2023-06-29~2023-07-05)
 
 <details>
 <summary>✨ <u><b>2023-06-29</b></u>: Repository 생성, DTO 추가, SalesItem MVC 구조</summary>
