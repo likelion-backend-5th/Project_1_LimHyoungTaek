@@ -26,8 +26,7 @@ public class CommentService {
 
     // Post Comment
     public void postComment(Long itemId, CommentDto comments) {
-        if (!itemRepository.existsById(itemId))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        existById(itemId); // 해당 게시글이 존재하는지
 
         CommentEntity newComment = new CommentEntity();
         newComment.setItemId(itemId);
@@ -40,8 +39,7 @@ public class CommentService {
 
     // View All Comments
     public Page<CommentPageInfoDto> getCommentsPaged(Long itemId) {
-        if (!itemRepository.existsById(itemId))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        existById(itemId);
         Pageable pageable =
                 PageRequest.of(0, 25, Sort.by("id"));
         Page<CommentEntity> commentEntities = commentRepository.findAll(pageable);
@@ -87,8 +85,16 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
+    // 해당 게시글이 존재하는지
+    public void existById(Long itemId) {
+        if (!itemRepository.existsById(itemId))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
     // 요청 댓글 유무, 대상 댓글이 대상 게시글의 댓글인지 확인
     public CommentEntity validateCommentByItemId(Long commentId, Long itemId) {
+        existById(itemId);
+
         CommentEntity commentEntity = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
