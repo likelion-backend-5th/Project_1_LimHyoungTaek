@@ -16,7 +16,7 @@
 <details><summary> 1️⃣ POST /items </summary>
 
 Request Body:
-```
+```json
 {
     "writer": "lim123",
     "title": "중고 맥북 팝니다",
@@ -52,7 +52,7 @@ Response Body:
 <details><summary> 4️⃣ PUT /items/{itemId} </summary>
 
 Request Body:
-```
+```json
 {
     "title": "응 안팔아",
     "description": "걍 내가 쓸꺼야",
@@ -78,7 +78,7 @@ Request Body & Response Body:
 <details><summary> 6️⃣ DELETE /items/{itemId} </summary>
 
 Request Body:
-```
+```json
 {
     "writer": "lim123",
     "password": "1qaz2wsx"
@@ -91,21 +91,101 @@ Response Body:
 
 </details>
 
-</details>
-
 <br><br>
+
+</details>
 
 ### 2. 물품 댓글
 <details>
 <summary><b><u>중고 물품 댓글 API</u></b></summary><br>
 
-<details><summary> 1️⃣ </summary></details>
-<details><summary> 2️⃣ </summary></details>
-<details><summary> 3️⃣ </summary></details>
-<details><summary> 4️⃣ </summary></details>
-<details><summary> 5️⃣ </summary></details>
-<details><summary> 6️⃣ </summary></details>
-<details><summary> 7️⃣ </summary></details>
+<details><summary> 1️⃣ POST /items/{itemId}/comments </summary>
+
+Request Body:
+```json
+{
+    "writer": "jeeho.edu",
+    "password": "qwerty1234",
+    "content": "할인 가능하신가요?"
+}
+```
+
+Response Body:
+
+![img](readme_img/c1.png)
+
+</details>
+<details><summary> 2️⃣ GET /items/{itemId}/comments </summary>
+
+Request Body:
+```json
+{
+    "writer": "lim123",
+    "password": "1qaz2wsx",
+    "reply": "ㄴㄴ안됨"
+}
+```
+
+Response Body:
+
+![img](readme_img/c2.png)
+
+</details>
+<details><summary> 3️⃣ PUT /items/{itemId}/comments/{commentId} </summary>
+
+Request Body:
+```json
+{
+    "writer": "jeeho.edu",
+    "password": "qwerty1234",
+    "content": "1000000 정도면 고려 가능합니다"
+}
+```
+
+Response Body:
+
+![img](readme_img/c3.png)
+
+</details>
+<details><summary> 4️⃣ PUT /items/{itemId}/comments/{commentId}/reply </summary>
+
+Request Body:
+```json
+{
+    "writer": "lim123",
+    "password": "1qaz2wsx",
+    "reply": "ㄴㄴ안됨"
+}
+```
+
+Response Body:
+
+![img](readme_img/c4.png)
+
+</details>
+<details><summary> 5️⃣ DELETE /items/{itemId}/comments/{commentId} </summary>
+
+Request Body:
+```json
+{
+    "writer": "jeeho.edu",
+    "password": "qwerty1234"
+}
+```
+
+Response Body:
+
+![img](readme_img/c5.png)
+
+</details>
+
+<details><summary> 6️⃣ 답글은 물품 등록 작성자를 제외하고는 달 수 없다. </summary>
+
+![img](readme_img/c6.png)
+
+</details>
+
+<br><br>
 
 </details>
 
@@ -113,12 +193,93 @@ Response Body:
 <details>
 <summary><b><u>구매 제안 API</u></b></summary><br>
 
-<details><summary> 1️⃣ </summary></details>
-<details><summary> 2️⃣ </summary></details>
-<details><summary> 3️⃣ </summary></details>
-<details><summary> 4️⃣ </summary></details>
-<details><summary> 5️⃣ </summary></details>
-<details><summary> 6️⃣ </summary></details>
+<details><summary> 1️⃣ POST /items/{itemId}/proposals </summary>
+
+Request Body:
+```json
+{
+    "writer": "Taek",
+    "password": "asdf1234",
+    "suggestedPrice": 1000000
+}
+```
+
+Response Body:
+
+![img](readme_img/p1.png)
+
+</details>
+<details><summary> 2️⃣ http://localhost:8080/items/1/proposal?writer=lim123&password=1qaz2wsx&page=1 </summary>
+
+Response Body:
+
+![img](readme_img/p2.png)
+
+</details>
+<details><summary> 3️⃣ PUT /items/{itemId}/proposals/{proposalId} </summary>
+
+Request Body:
+```json
+{
+    "writer": "Taek",
+    "password": "asdf1234",
+    "suggestedPrice": 7777777
+}
+```
+
+Response Body:
+
+![img](readme_img/p3.png)
+
+</details>
+<details><summary> 4️⃣ DELETE /items/{itemId}/proposals/{proposalId} </summary>
+
+Request Body:
+```json
+{
+    "writer": "Taek",
+    "password": "asdf1234"
+}
+```
+
+Response Body:
+
+![img](readme_img/p4.png)
+
+</details>
+<details><summary> 5️⃣ PUT /items/{itemId}/proposals/{proposalId} </summary>
+
+Request Body:
+```json
+{
+    "writer": "lim123",
+    "password": "1qaz2wsx",
+    "status": "거절" // 수락도 됩니다.
+}
+```
+
+Response Body:
+
+![img](readme_img/p5.png)
+
+</details>
+<details><summary> 6️⃣ PUT /items/{itemId}/proposals/{proposalId} </summary>
+
+Request Body:
+```json
+{
+    "writer": "Taek",
+    "password": "asdf1234",
+    "status": "확정"
+}
+```
+
+Response Body:
+
+![img](readme_img/p6.png)
+
+</details>
+
 <details><summary> 7️⃣ </summary></details>
 
 </details>
