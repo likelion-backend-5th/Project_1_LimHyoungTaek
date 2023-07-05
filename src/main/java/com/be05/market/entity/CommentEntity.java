@@ -14,12 +14,9 @@ public class CommentEntity implements PasswordValidatable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull(message = "대상 물품이 존재하지 않습니다.")
     private Long itemId;
-    @NotNull(message = "작성자를 입력해주세요.")
     private String writer;
     private String password;
-    @NotNull(message = "댓글을 작성해주세요.")
     private String content;
     private String reply;
 
