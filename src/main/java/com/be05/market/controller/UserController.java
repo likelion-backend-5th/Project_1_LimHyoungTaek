@@ -1,7 +1,7 @@
 package com.be05.market.controller;
 
+import com.be05.market.entity.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
@@ -36,11 +36,17 @@ public class UserController {
     public String signUp(
             @RequestParam("userId") String userId,
             @RequestParam("password") String password,
-            @RequestParam("password-check") String passwordCheck) {
+            @RequestParam("password-check") String passwordCheck,
+            @RequestParam("phone") String phone,
+            @RequestParam("email") String email,
+            @RequestParam("address") String address) {
         if (password.equals(passwordCheck)) {
-            userManger.createUser(User
-                    .withUsername(userId)
+            userManger.createUser(CustomUserDetails.builder()
+                    .username(userId)
                     .password(passwordEncoder.encode(password))
+                    .phone(phone)
+                    .email(email)
+                    .address(address)
                     .build());
             return "redirect:/users/login";
         }
