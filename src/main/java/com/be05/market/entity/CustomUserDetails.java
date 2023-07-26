@@ -14,7 +14,7 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
     @Getter
     private Long id;
-    private String username;
+    private String userId;
     private String password;
     @Getter
     private String email;
@@ -35,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.userId;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class CustomUserDetails implements UserDetails {
     public static CustomUserDetails fromEntity(UserEntity entity) {
         return CustomUserDetails.builder()
                 .id(entity.getId())
-                .username(entity.getUserId())
+                .userId(entity.getUserId())
                 .password(entity.getPassword())
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
@@ -71,7 +71,7 @@ public class CustomUserDetails implements UserDetails {
 
     public UserEntity newEntity() {
         UserEntity entity = new UserEntity();
-        entity.setUserId(username);
+        entity.setUserId(userId);
         entity.setPassword(password);
         entity.setEmail(email);
         entity.setPhone(phone);
