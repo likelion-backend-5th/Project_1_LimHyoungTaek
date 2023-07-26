@@ -12,6 +12,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull(message = "아이디를 입력해주세요.")
+    @Column(nullable = false, unique = true)
     private String userId;
     @NotNull(message = "비밀번호를 입력해주세요.")
     private String password;
