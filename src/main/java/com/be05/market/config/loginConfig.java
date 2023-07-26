@@ -20,9 +20,10 @@ public class loginConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/no-auth").permitAll()
-                        .requestMatchers("/re-auth", "/users/profile").authenticated()
-                        .requestMatchers("/").anonymous()
+                        .requestMatchers(
+                                "/users/logout",
+                                "/users/profile").authenticated()
+                        .requestMatchers("/users/register").anonymous()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/users/login")
