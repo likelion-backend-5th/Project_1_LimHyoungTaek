@@ -1,9 +1,9 @@
 package com.be05.market.service;
 
+import com.be05.market.entity.CustomUserDetails;
 import com.be05.market.entity.UserEntity;
 import com.be05.market.repository.UserRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,21 +21,20 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                                  PasswordEncoder passwordEncoder)
     {
         this.userRepository = userRepository;
-        createUser(User.withUsername("user")
+        createUser(CustomUserDetails.builder()
+                .username("user")
                 .password(passwordEncoder.encode("asdf"))
-                .build()
-        );
+                .email("user@naver.com")
+                .phone("010-1234-5678")
+                .address("경기 안산")
+                .build());
     }
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Optional<UserEntity> optionalUser = userRepository.findByUserId(userId);
         if (optionalUser.isEmpty()) throw new UsernameNotFoundException(userId);
-
-        UserEntity userEntity = optionalUser.get();
-        return User.withUsername(userEntity.getUserId())
-                .password(userEntity.getPassword())
-                .build();
+        return CustomUserDetails.fromEntity(optionalUser.get());
     }
 
     @Override
@@ -43,10 +42,11 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         if (this.userExists(user.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUserId(user.getUsername());
-        userEntity.setPassword(user.getPassword());
-        this.userRepository.save(userEntity);
+        try {
+            this.userRepository.save(((CustomUserDetails) user).newEntity());
+        } catch (ClassCastException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
