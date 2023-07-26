@@ -14,19 +14,31 @@
       <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
         <div class="row gx-5 justify-content-center">
           <div class="col-lg-8 col-xl-6">
-            <h1 class="text-center mb-5">회원가입</h1>
+            <h1 class="text-center mb-4">회원가입</h1>
             <form action="/users/register" method="post">
-              <div class="form-floating mb-3">
+              <div class="form-floating mb-2">
                 <input class="form-control" id="identifier" name="userId" type="text" placeholder="Enter your identifier...">
-                <label for="identifier">ID</label>
+                <label for="identifier">ID(필수)</label>
               </div>
-              <div class="form-floating mb-3">
+              <div class="form-floating mb-2">
                 <input class="form-control" id="password" name="password" type="password" placeholder="Enter your password...">
-                <label for="password">Password</label>
+                <label for="password">Password(필수)</label>
               </div>
-              <div class="form-floating mb-3">
+              <div class="form-floating mb-2">
                 <input class="form-control" id="password-check" name="password-check" type="password" placeholder="Re-enter your password...">
-                <label for="password-check">Password Check</label>
+                <label for="password-check">Password Check(필수)</label>
+              </div>
+              <div class="form-floating mb-2">
+                <input class="form-control" id="phone" name="phone" type="text" placeholder="Enter your phone number...">
+                <label for="phone">Phone(선택)</label>
+              </div>
+              <div class="form-floating mb-2">
+                <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email...">
+                <label for="email">Email(선택)</label>
+              </div>
+              <div class="form-floating mb-2">
+                <input class="form-control" id="address" name="address" type="text" placeholder="Enter your address...">
+                <label for="address">Address(선택)</label>
               </div>
               <div class="d-grid"><button class="btn btn-primary btn-lg" id="sign-in-button" type="submit">Submit</button></div>
               <div style="margin-top: 16px; text-align: right"><a href="/users/login">로그인</a></div>
