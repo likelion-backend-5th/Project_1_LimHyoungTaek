@@ -22,7 +22,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     {
         this.userRepository = userRepository;
         createUser(CustomUserDetails.builder()
-                .username("user")
+                .userId("user")
                 .password(passwordEncoder.encode("asdf"))
                 .email("user@naver.com")
                 .phone("010-1234-5678")
