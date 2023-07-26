@@ -13,7 +13,7 @@ public class UserEntity {
     private Long id;
 
     @NotNull(message = "아이디를 입력해주세요.")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false) // unique = true -> sqlite error
     private String userId;
     @NotNull(message = "비밀번호를 입력해주세요.")
     private String password;
