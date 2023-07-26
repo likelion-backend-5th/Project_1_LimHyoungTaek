@@ -40,9 +40,10 @@ public class UserController {
             @RequestParam("phone") String phone,
             @RequestParam("email") String email,
             @RequestParam("address") String address) {
-        if (password.equals(passwordCheck)) {
+        if ((!userId.isEmpty() && !password.isEmpty())
+                && password.equals(passwordCheck)) {
             userManger.createUser(CustomUserDetails.builder()
-                    .username(userId)
+                    .userId(userId)
                     .password(passwordEncoder.encode(password))
                     .phone(phone)
                     .email(email)
