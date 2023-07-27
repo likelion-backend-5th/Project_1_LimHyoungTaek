@@ -1,17 +1,15 @@
-package com.be05.market.entity;
+package com.be05.market.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.be05.market.entity.UserEntity;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Builder
+@Builder @Data
 @NoArgsConstructor @AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
+public class UserDto implements UserDetails {
     @Getter
     private Long id;
     private String userId;
@@ -22,6 +20,8 @@ public class CustomUserDetails implements UserDetails {
     private String phone;
     @Getter
     private String address;
+    @Getter
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,14 +58,15 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public static CustomUserDetails fromEntity(UserEntity entity) {
-        return CustomUserDetails.builder()
+    public static UserDto fromEntity(UserEntity entity) {
+        return UserDto.builder()
                 .id(entity.getId())
                 .userId(entity.getUserId())
                 .password(entity.getPassword())
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
                 .address(entity.getAddress())
+                .token(entity.getToken())
                 .build();
     }
 
@@ -76,6 +77,7 @@ public class CustomUserDetails implements UserDetails {
         entity.setEmail(email);
         entity.setPhone(phone);
         entity.setAddress(address);
+        entity.setToken(token);
         return entity;
     }
 }
