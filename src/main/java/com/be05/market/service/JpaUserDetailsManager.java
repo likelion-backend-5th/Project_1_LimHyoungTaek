@@ -1,8 +1,9 @@
 package com.be05.market.service;
 
-import com.be05.market.entity.CustomUserDetails;
+import com.be05.market.dto.UserDto;
 import com.be05.market.entity.UserEntity;
 import com.be05.market.repository.UserRepository;
+import com.be05.market.token.JwtTokenUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,17 +12,25 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @Service
-public class JpaUserDetailsManager implements UserDetailsManager {
+public class JpaUserDetailsManager {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsManager userManger;
+    private final JwtTokenUtils tokenUtils;
 
+    // 나중에 지우고 @RequiredArgsConstructor
     public JpaUserDetailsManager(UserRepository userRepository,
-                                 PasswordEncoder passwordEncoder)
+                                 PasswordEncoder passwordEncoder,
+                                 UserDetailsManager userManger,
+                                 JwtTokenUtils tokenUtils)
     {
         this.userRepository = userRepository;
-        createUser(CustomUserDetails.builder()
+        this.passwordEncoder = passwordEncoder;
+        this.userManger = userManger;
+        this.tokenUtils = tokenUtils;
+
+        createUser(UserDto.builder()
                 .userId("user")
                 .password(passwordEncoder.encode("asdf"))
                 .email("user@naver.com")
@@ -30,38 +39,40 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .build());
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Optional<UserEntity> optionalUser = userRepository.findByUserId(userId);
-        if (optionalUser.isEmpty()) throw new UsernameNotFoundException(userId);
-        return CustomUserDetails.fromEntity(optionalUser.get());
-    }
-
-    @Override
     public void createUser(UserDetails user) {
         if (this.userExists(user.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         try {
-            this.userRepository.save(((CustomUserDetails) user).newEntity());
+            this.userRepository.save(((UserDto) user).newEntity());
         } catch (ClassCastException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @Override
+    public UserDto loginToSaveToken(UserDto dto) {
+        UserEntity userEntity = userRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new UsernameNotFoundException(dto.getUserId()));
+
+        UserDetails userDetails = UserDto.fromEntity(userEntity);
+        if (!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword()))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+        String token = tokenUtils.generateToken(dto);
+        userEntity.setToken(token);
+        userRepository.save(userEntity);
+        return UserDto.fromEntity(userEntity);
+    }
+
     public void updateUser(UserDetails user) {
     }
 
-    @Override
     public void deleteUser(String username) {
     }
 
-    @Override
     public void changePassword(String oldPassword, String newPassword) {
     }
 
-    @Override
     public boolean userExists(String userId) {
         return this.userRepository.existsByUserId(userId);
     }
