@@ -3,9 +3,7 @@ package com.be05.market.controller;
 import com.be05.market.dto.UserDto;
 import com.be05.market.service.JpaUserDetailsManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserDetailsManager userManger;
     private final JpaUserDetailsManager jpaUserDetailsManager;
     private final PasswordEncoder passwordEncoder;
 
@@ -47,7 +44,7 @@ public class UserController {
             @RequestParam("address") String address) {
         if ((!userId.isEmpty() && !password.isEmpty())
                 && password.equals(passwordCheck)) {
-            userManger.createUser(UserDto.builder()
+            jpaUserDetailsManager.createUser(UserDto.builder()
                     .userId(userId)
                     .password(passwordEncoder.encode(password))
                     .phone(phone)
