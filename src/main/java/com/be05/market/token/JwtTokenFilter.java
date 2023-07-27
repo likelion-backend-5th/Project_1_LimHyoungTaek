@@ -1,6 +1,6 @@
 package com.be05.market.token;
 
-import com.be05.market.entity.CustomUserDetails;
+import com.be05.market.dto.UserDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,7 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
                 AbstractAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(
-                                CustomUserDetails.builder()
+                                UserDto.builder()
                                         .userId(userId)
                                         .build(), token, new ArrayList<>());
 
