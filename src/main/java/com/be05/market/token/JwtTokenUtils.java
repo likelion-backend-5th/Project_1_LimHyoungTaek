@@ -1,12 +1,12 @@
 package com.be05.market.token;
 
+import com.be05.market.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -26,9 +26,9 @@ public class JwtTokenUtils {
                 .build();
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDto userDto) {
         Claims jwtClaims = Jwts.claims()
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDto.getUsername())
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plusSeconds(3600)));
 
