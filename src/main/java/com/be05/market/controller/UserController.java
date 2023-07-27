@@ -1,39 +1,30 @@
 package com.be05.market.controller;
 
-import com.be05.market.entity.CustomUserDetails;
-import com.be05.market.token.JwtRequestDto;
-import com.be05.market.token.JwtTokenDto;
-import com.be05.market.token.JwtTokenUtils;
+import com.be05.market.dto.UserDto;
+import com.be05.market.service.JpaUserDetailsManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserDetailsManager userManger;
+    private final JpaUserDetailsManager jpaUserDetailsManager;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenUtils tokenUtils;
 
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public JwtTokenDto generateJwt(@RequestBody JwtRequestDto dto) {
-        UserDetails userDetails = userManger.loadUserByUsername(dto.getUserId());
-        if (!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword()))
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
-        JwtTokenDto response = new JwtTokenDto();
-        response.setToken(tokenUtils.generateToken(userDetails));
-        return response;
+    @PostMapping("/login") @ResponseBody
+    public UserDto generateJwt(@RequestBody UserDto dto) {
+        return jpaUserDetailsManager.loginToSaveToken(dto);
     }
 
     @GetMapping("/profile")
@@ -56,7 +47,7 @@ public class UserController {
             @RequestParam("address") String address) {
         if ((!userId.isEmpty() && !password.isEmpty())
                 && password.equals(passwordCheck)) {
-            userManger.createUser(CustomUserDetails.builder()
+            userManger.createUser(UserDto.builder()
                     .userId(userId)
                     .password(passwordEncoder.encode(password))
                     .phone(phone)
