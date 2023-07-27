@@ -23,7 +23,7 @@ public class loginConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/users/login", "/token/issue")
+                        .requestMatchers("/users/login")
                         .permitAll()
                         .requestMatchers("/", "/users/register")
                         .anonymous().anyRequest().authenticated()
