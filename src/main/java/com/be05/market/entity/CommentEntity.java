@@ -2,7 +2,6 @@ package com.be05.market.entity;
 
 import com.be05.market.service.PasswordValidatable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,12 +12,16 @@ import org.springframework.web.server.ResponseStatusException;
 public class CommentEntity implements PasswordValidatable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private Long id;
-    private Long itemId;
     private String writer;
     private String password;
     private String content;
     private String reply;
+
+    @ManyToOne
+    @JoinColumn(name = "item")
+    private ItemEntity item;
 
     @Override
     public void validatePassword(String password) {

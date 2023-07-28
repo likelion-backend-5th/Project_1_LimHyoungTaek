@@ -24,11 +24,11 @@ public class ItemEntity implements PasswordValidatable {
     private String writer;
     private String password;
 
-//    @OneToMany(mappedBy = "items")
-//    private List<CommentEntity> itemComments = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "item")
-//    private List<ProposalEntity> itemNegotiations = new ArrayList<>();
+    @OneToMany(mappedBy = "item")
+    private List<CommentEntity> itemComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<ProposalEntity> itemNegotiations = new ArrayList<>();
 //
     @ManyToOne
     @JoinColumn(name = "user")

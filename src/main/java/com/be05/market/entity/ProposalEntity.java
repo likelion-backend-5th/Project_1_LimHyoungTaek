@@ -12,12 +12,16 @@ import org.springframework.web.server.ResponseStatusException;
 public class ProposalEntity implements PasswordValidatable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "negotiation_id")
     private Long id;
-    private Long itemId;
     private Long suggestedPrice;
     private String status;
     private String writer;
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "item")
+    private ItemEntity item;
 
     @Override
     public void validatePassword(String password) {
