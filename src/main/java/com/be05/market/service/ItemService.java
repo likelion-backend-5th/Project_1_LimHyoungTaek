@@ -28,15 +28,8 @@ public class ItemService {
 
     // CREATE
     public void createItem(SalesItemDto items) {
-        ItemEntity newItems = new ItemEntity();
-        newItems.setTitle(items.getTitle());
-        newItems.setDescription(items.getDescription());
-        newItems.setMinPriceWanted(items.getMinPriceWanted());
-        newItems.setWriter(items.getWriter());
-        newItems.setPassword(items.getPassword());
-        newItems.setStatus("판매중");
-        SalesItemDto.fromEntity(itemRepository.save(newItems));
-        log.info(String.valueOf(newItems));
+        SalesItemDto.fromEntity(itemRepository.save(items.newEntity()));
+        log.info(String.valueOf(items));
     }
 
     // FindAll(Pages)
