@@ -2,10 +2,12 @@ package com.be05.market.entity;
 
 import com.be05.market.service.PasswordValidatable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,6 +23,16 @@ public class ItemEntity implements PasswordValidatable {
     private String status;
     private String writer;
     private String password;
+
+//    @OneToMany(mappedBy = "items")
+//    private List<CommentEntity> itemComments = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "item")
+//    private List<ProposalEntity> itemNegotiations = new ArrayList<>();
+//
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private UserEntity user;
 
     @Override
     public void validatePassword(String password) {

@@ -3,6 +3,9 @@ package com.be05.market.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -21,4 +24,7 @@ public class UserEntity {
     private String address;
 
     private String token;
+
+    @OneToMany(mappedBy = "user")
+    private List<ItemEntity> items = new ArrayList<>();
 }
