@@ -31,17 +31,12 @@ public class ProposalService {
 
     // Post Purchase Offer
     public void postOffer(Long itemId, NegotiationDto negotiationDto) {
-        existById(itemId);
+        ItemEntity itemEntity = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (negotiationDto.getSuggestedPrice() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        ProposalEntity newProposal = new ProposalEntity();
-        newProposal.setItemId(itemId);
-        newProposal.setSuggestedPrice(negotiationDto.getSuggestedPrice());
-        newProposal.setStatus("제안");
-        newProposal.setWriter(negotiationDto.getWriter());
-        newProposal.setPassword(negotiationDto.getPassword());
-        NegotiationDto.fromEntity(proposalRepository.save(newProposal));
-        log.info(String.valueOf(newProposal));
+
+        proposalRepository.save(negotiationDto.newEntity(itemEntity));
     }
 
     // View Purchase Offer
@@ -144,12 +139,13 @@ public class ProposalService {
 
     // 요청 구매 제안 유무, 대상 구매 제안이 대상 게시글의 제안인지 확인
     public ProposalEntity validateProposalByItemId(Long proposalId, Long itemId) {
-        existById(itemId);
+        ItemEntity itemEntity = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         ProposalEntity proposalEntity = proposalRepository.findById(proposalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!itemId.equals(proposalEntity.getItemId()))
+        if (!itemId.equals(itemEntity.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         return proposalEntity;
