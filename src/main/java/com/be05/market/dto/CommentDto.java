@@ -1,14 +1,13 @@
 package com.be05.market.dto;
 
 import com.be05.market.entity.CommentEntity;
+import com.be05.market.entity.ItemEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class CommentDto {
     private Long id;
-    @NotNull(message = "대상 물품이 존재하지 않습니다.")
-    private Long itemId;
     @NotNull(message = "작성자를 입력해주세요.")
     private String writer;
     private String password;
@@ -19,11 +18,19 @@ public class CommentDto {
     public static CommentDto fromEntity(CommentEntity entity) {
         CommentDto comments = new CommentDto();
         comments.setId(entity.getId());
-        comments.setItemId(entity.getItemId());
         comments.setWriter(entity.getWriter());
         comments.setPassword(entity.getPassword());
         comments.setContent(entity.getContent());
         comments.setReply(entity.getReply());
         return comments;
+    }
+
+    public CommentEntity newEntity(ItemEntity item) {
+        CommentEntity entity = new CommentEntity();
+        entity.setItem(item); // 기존 item_id 대체
+        entity.setWriter(writer);
+        entity.setPassword(password);
+        entity.setContent(content);
+        return entity;
     }
 }

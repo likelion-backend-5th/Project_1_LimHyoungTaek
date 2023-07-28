@@ -26,15 +26,10 @@ public class CommentService {
 
     // Post Comment
     public void postComment(Long itemId, CommentDto comments) {
-        existById(itemId); // 해당 게시글이 존재하는지
-
-        CommentEntity newComment = new CommentEntity();
-        newComment.setItemId(itemId);
-        newComment.setWriter(comments.getWriter());
-        newComment.setPassword(comments.getPassword());
-        newComment.setContent(comments.getContent());
-        CommentDto.fromEntity(commentRepository.save(newComment));
-        log.info(String.valueOf(newComment));
+        // 해당 게시글이 존재하는지
+        ItemEntity itemEntity = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        commentRepository.save(comments.newEntity(itemEntity));
     }
 
     // View All Comments
@@ -93,12 +88,13 @@ public class CommentService {
 
     // 요청 댓글 유무, 대상 댓글이 대상 게시글의 댓글인지 확인
     public CommentEntity validateCommentByItemId(Long commentId, Long itemId) {
-        existById(itemId);
+        ItemEntity itemEntity = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         CommentEntity commentEntity = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!itemId.equals(commentEntity.getItemId()))
+        if (!itemId.equals(itemEntity.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         return commentEntity;
