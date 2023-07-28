@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Builder @Data
-@NoArgsConstructor @AllArgsConstructor
+@Builder @Data @AllArgsConstructor
 public class UserDto implements UserDetails {
+
     @Getter
     private Long id;
     private String userId;
@@ -70,7 +70,7 @@ public class UserDto implements UserDetails {
                 .build();
     }
 
-    public UserEntity newEntity() {
+    public UserEntity newEntity(String password) {
         UserEntity entity = new UserEntity();
         entity.setUserId(userId);
         entity.setPassword(password);
