@@ -21,7 +21,7 @@ public class ItemController {
     // TODO: POST /items
     @PostMapping
     public ResponseDto create(@RequestBody SalesItemDto items) {
-        itemService.createItem(items);
+        itemService.createItem(items, items.getWriter());
         responseDto.setMessage("등록이 완료되었습니다.");
         return responseDto;
     }

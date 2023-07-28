@@ -3,7 +3,9 @@ package com.be05.market.service;
 import com.be05.market.dto.mapping.ItemPageInfoDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.entity.ItemEntity;
+import com.be05.market.entity.UserEntity;
 import com.be05.market.repository.ItemRepository;
+import com.be05.market.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,11 +27,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
     // CREATE
-    public void createItem(SalesItemDto items) {
-        SalesItemDto.fromEntity(itemRepository.save(items.newEntity()));
-        log.info(String.valueOf(items));
+    public void createItem(SalesItemDto items, String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        itemRepository.save(items.newEntity(userEntity));
     }
 
     // FindAll(Pages)

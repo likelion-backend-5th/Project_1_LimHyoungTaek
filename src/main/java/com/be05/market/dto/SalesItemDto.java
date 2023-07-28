@@ -31,11 +31,11 @@ public class SalesItemDto {
         salesItem.setStatus(entity.getStatus());
         salesItem.setWriter(entity.getWriter());
         salesItem.setPassword(entity.getPassword());
-//        salesItem.setUser(UserDto.fromEntity(entity.getUser()));
+        salesItem.setUser(entity.getUser());
         return salesItem;
     }
 
-    public ItemEntity newEntity() {
+    public ItemEntity newEntity(UserEntity user) {
         ItemEntity entity = new ItemEntity();
         entity.setTitle(title);
         entity.setDescription(description);
