@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class JpaUserDetailsManager {
+public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsManager userManger;
     private final JwtTokenUtils tokenUtils;
 
     // 나중에 지우고 @RequiredArgsConstructor
-    public JpaUserDetailsManager(UserRepository userRepository,
-                                 PasswordEncoder passwordEncoder,
-                                 UserDetailsManager userManger,
-                                 JwtTokenUtils tokenUtils)
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       UserDetailsManager userManger,
+                       JwtTokenUtils tokenUtils)
     {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -32,19 +32,20 @@ public class JpaUserDetailsManager {
 
         createUser(UserDto.builder()
                 .userId("user")
-                .password(passwordEncoder.encode("asdf"))
+                .password("asdf")
                 .email("user@naver.com")
                 .phone("010-1234-5678")
                 .address("경기 안산")
                 .build());
     }
 
-    public void createUser(UserDetails user) {
-        if (this.userExists(user.getUsername()))
+    public void createUser(UserDto dto) {
+        if (this.userExists(dto.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
         try {
-            this.userRepository.save(((UserDto) user).newEntity());
+            UserEntity userEntity =
+                    dto.newEntity(passwordEncoder.encode(dto.getPassword()));
+            this.userRepository.save(userEntity);
         } catch (ClassCastException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
