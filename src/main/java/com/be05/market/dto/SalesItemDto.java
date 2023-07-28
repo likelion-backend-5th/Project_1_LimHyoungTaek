@@ -19,7 +19,6 @@ public class SalesItemDto {
     @NotNull(message = "작성자를 입력해주세요.")
     private String writer;
     private String password;
-    private UserEntity user;
 
     public static SalesItemDto fromEntity(ItemEntity entity) {
         SalesItemDto salesItem = new SalesItemDto();
@@ -31,7 +30,6 @@ public class SalesItemDto {
         salesItem.setStatus(entity.getStatus());
         salesItem.setWriter(entity.getWriter());
         salesItem.setPassword(entity.getPassword());
-        salesItem.setUser(entity.getUser());
         return salesItem;
     }
 
