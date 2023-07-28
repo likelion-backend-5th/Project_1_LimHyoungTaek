@@ -21,7 +21,7 @@ public class LoginConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/users/login")
+                        .requestMatchers("/users/login", "/items/**")
                         .permitAll()
                         .requestMatchers("/", "/users/login", "/users/register")
                         .anonymous().anyRequest().authenticated()
