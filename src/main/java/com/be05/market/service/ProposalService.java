@@ -2,12 +2,13 @@ package com.be05.market.service;
 
 import com.be05.market.dto.NegotiationDto;
 import com.be05.market.dto.ResponseDto;
-import com.be05.market.dto.SalesItemDto;
 import com.be05.market.dto.mapping.ProposalPageInfoDto;
 import com.be05.market.entity.ItemEntity;
 import com.be05.market.entity.ProposalEntity;
+import com.be05.market.entity.UserEntity;
 import com.be05.market.repository.ItemRepository;
 import com.be05.market.repository.ProposalRepository;
+import com.be05.market.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,52 +28,58 @@ import java.util.List;
 public class ProposalService {
     private final ResponseDto responseDto = new ResponseDto();
     private final ProposalRepository proposalRepository;
+    private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final ItemService itemService;
 
     // Post Purchase Offer
-    public void postOffer(Long itemId, NegotiationDto negotiationDto) {
+    public void postOffer(Long itemId, NegotiationDto negotiationDto, Authentication authentication) {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        UserEntity userEntity = getUserEntity(authentication);
         if (negotiationDto.getSuggestedPrice() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        proposalRepository.save(negotiationDto.newEntity(itemEntity));
+        proposalRepository.save(negotiationDto.newEntity(itemEntity, userEntity));
     }
 
     // View Purchase Offer
     public Page<ProposalPageInfoDto> findPagedOffer(
-            Long itemId, String writer, String password, Integer page) {
+            Long itemId, Authentication authentication, Integer page) {
         existById(itemId);
-
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        UserEntity userEntity = getUserEntity(authentication);
 
         // 물품 등록 작성자, 비밀번호 == requestParam 작성자, 비밀번호
         // -> 맞으면 모든 구매 제안을 볼 수 있다.
         Pageable pageable = PageRequest.of(page-1, 25, Sort.by("id"));
         Page<ProposalEntity> proposalEntities;
 
-        if (itemEntity.getWriter().equals(writer) && itemEntity.getPassword().equals(password)) {
+        if (itemEntity.getUser().getUserId().equals(userEntity.getUserId())
+                && itemEntity.getUser().getPassword().equals(userEntity.getPassword())) {
             proposalEntities = proposalRepository.findAll(pageable);
         }
         // 물품 등록 작성자, 비밀번호 != requestParam 작성자, 비밀번호
         // -> requestParam 작성자의 구매 제안만 볼 수 있다.
         else {
-            proposalEntities = proposalRepository.findAllByItemIdAndWriter(itemId, writer, pageable);
+            proposalEntities = proposalRepository
+                    .findAllByItemIdAndUser_userId(itemId, userEntity.getUserId(), pageable);
         }
         return proposalEntities.map(ProposalPageInfoDto::fromEntity);
     }
 
     // PUT Status or SuggestedPrice?
     public ResponseDto putUpdateOffer(Long proposalId, Long itemId,
-                                      NegotiationDto negotiationDto) {
+                                      NegotiationDto negotiationDto,
+                                      Authentication authentication) {
         ProposalEntity proposalEntity = validateProposalByItemId(proposalId, itemId);
+        UserEntity userEntity = getUserEntity(authentication);
         ItemEntity itemEntity = itemService.getItemById(itemId);
 
         // 구매 제안 작성자일 때
-        if(negotiationDto.getWriter().equals(proposalEntity.getWriter())) {
-            proposalEntity.validatePassword(negotiationDto.getPassword()); // 비밀번호 체크
+        if(userEntity.getUserId().equals(proposalEntity.getUser().getUserId())) {
+            proposalEntity.validatePassword(userEntity.getPassword()); // 비밀번호 체크
             // 1) 구매 가격 제안 수정("제안" & SuggestedPrice != null)
             if (proposalEntity.getStatus().equals("제안")
                     && negotiationDto.getSuggestedPrice() != null) {
@@ -83,7 +91,7 @@ public class ProposalService {
             if (proposalEntity.getStatus().equals("수락")
                     && negotiationDto.getStatus().equals("확정")) {
                 itemEntity.setStatus("판매 완료");
-                SalesItemDto.fromEntity(itemRepository.save(itemEntity));
+                itemRepository.save(itemEntity);
 
                 List<ProposalEntity> proposals = proposalRepository.findAll();
                 for (ProposalEntity proposal : proposals) {
@@ -98,9 +106,9 @@ public class ProposalService {
             }
         }
         // 물품 등록 작성자일 때
-        if (negotiationDto.getWriter().equals(itemEntity.getWriter())) {
-            itemEntity.validatePassword(negotiationDto.getPassword());
-            acceptRejectOffer(proposalEntity, itemEntity, negotiationDto);
+        if (userEntity.getUserId().equals(itemEntity.getUser().getUserId())) {
+            itemEntity.validatePassword(userEntity.getPassword());
+            acceptRejectOffer(proposalEntity, itemEntity, negotiationDto, authentication);
             return responseDto;
         } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
@@ -109,26 +117,35 @@ public class ProposalService {
     public void modifiedOffer(ProposalEntity proposalEntity,
                               NegotiationDto negotiationDto) {
         proposalEntity.setSuggestedPrice(negotiationDto.getSuggestedPrice());
-        NegotiationDto.fromEntity(proposalRepository.save(proposalEntity));
+        proposalRepository.save(proposalEntity);
     }
 
     // Delete Purchase Offer
-    public void deleteOffer(Long proposalId, Long itemId, NegotiationDto negotiationDto) {
+    public void deleteOffer(Long proposalId, Long itemId, Authentication authentication) {
         ProposalEntity proposalEntity = validateProposalByItemId(proposalId, itemId);
-        proposalEntity.validatePassword(negotiationDto.getPassword());
+        UserEntity userEntity = userRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        proposalEntity.validatePassword(userEntity.getPassword());
         if (proposalEntity.getStatus().equals("확정")) // 구매 확정인데 지우려고 할 경우
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         proposalRepository.deleteById(proposalId);
     }
 
     // Accept, Reject Purchase Offer
-    public void acceptRejectOffer(ProposalEntity proposalEntity,
-                            ItemEntity itemEntity,
-                            NegotiationDto negotiationDto) {
-        itemEntity.validatePassword(negotiationDto.getPassword());
+    public void acceptRejectOffer(ProposalEntity proposalEntity, ItemEntity itemEntity,
+                            NegotiationDto negotiationDto, Authentication authentication) {
+        UserEntity userEntity = userRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        itemEntity.validatePassword(userEntity.getPassword());
         proposalEntity.setStatus(negotiationDto.getStatus());
-        NegotiationDto.fromEntity(proposalRepository.save(proposalEntity));
+        proposalRepository.save(proposalEntity);
         responseDto.setMessage("제안의 상태가 변경되었습니다.");
+    }
+
+    // Find User
+    private UserEntity getUserEntity(Authentication authentication) {
+        return userRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     // 해당 게시글이 존재하는지

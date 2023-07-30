@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProposalRepository extends JpaRepository<ProposalEntity, Long> {
-    Page<ProposalEntity> findAllByItemIdAndWriter(Long itemId, String writer, Pageable pageable);
+    Page<ProposalEntity> findAllByItemIdAndUser_userId(Long itemId, String userId, Pageable pageable);
 }
