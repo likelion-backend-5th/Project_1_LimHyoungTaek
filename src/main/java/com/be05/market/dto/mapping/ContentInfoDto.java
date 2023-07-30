@@ -1,6 +1,7 @@
 package com.be05.market.dto.mapping;
 
 import com.be05.market.dto.SalesItemDto;
+import com.be05.market.entity.ItemEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,10 +12,10 @@ public class ContentInfoDto {
     private Long minPriceWanted;
     private String status;
 
-    public ContentInfoDto(SalesItemDto items) {
-        this.title = items.getTitle();
-        this.description = items.getDescription();
-        this.minPriceWanted = items.getMinPriceWanted();
-        this.status = items.getStatus();
+    public ContentInfoDto(ItemEntity entity) {
+        this.title = entity.getTitle();
+        this.description = entity.getDescription();
+        this.minPriceWanted = entity.getMinPriceWanted();
+        this.status = entity.getStatus();
     }
 }
