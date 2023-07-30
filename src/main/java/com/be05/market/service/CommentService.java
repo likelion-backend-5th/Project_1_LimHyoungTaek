@@ -4,8 +4,10 @@ import com.be05.market.dto.CommentDto;
 import com.be05.market.dto.mapping.CommentPageInfoDto;
 import com.be05.market.entity.CommentEntity;
 import com.be05.market.entity.ItemEntity;
+import com.be05.market.entity.UserEntity;
 import com.be05.market.repository.CommentRepository;
 import com.be05.market.repository.ItemRepository;
+import com.be05.market.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,15 +24,18 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class CommentService {
     private final ItemRepository itemRepository;
-    private final ItemService itemService;
+    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final ItemService itemService;
+
 
     // Post Comment
-    public void postComment(Long itemId, CommentDto comments) {
+    public void postComment(Long itemId, CommentDto comments, Authentication authentication) {
         // 해당 게시글이 존재하는지
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        commentRepository.save(comments.newEntity(itemEntity));
+        UserEntity userEntity = getUserEntity(authentication);
+        commentRepository.save(comments.newEntity(itemEntity, userEntity));
     }
 
     // View All Comments
@@ -42,42 +48,55 @@ public class CommentService {
     }
 
     // Modifying Comment
-    public void modifiedComment(Long commentId, Long itemId, CommentDto comments) {
+    public void modifiedComment(Long commentId, Long itemId,
+                                CommentDto comments, Authentication authentication) {
         CommentEntity commentEntity = validateCommentByItemId(commentId, itemId);
-        commentEntity.validatePassword(comments.getPassword());
+        UserEntity userEntity = getUserEntity(authentication);
+
+        commentEntity.validatePassword(userEntity.getPassword());
         commentEntity.setContent(comments.getContent());
-        CommentDto.fromEntity(commentRepository.save(commentEntity));
+        commentRepository.save(commentEntity);
     }
 
     // Post, Modifying Reply
-    public void modifiedReply(Long commentId, Long itemId, CommentDto comments)
+    public void modifiedReply(Long commentId, Long itemId,
+                              CommentDto comments, Authentication authentication)
     {
         CommentEntity commentEntity = validateCommentByItemId(commentId, itemId);
         ItemEntity itemEntity = itemService.getItemById(itemId);
+        UserEntity userEntity = getUserEntity(authentication);
 
         // 1. 답글 작성자 != 물품 등록 작성자 -> 예외 처리
         // 댓글에 답글을 달 수 있는 사용자는 물품 정보를 등록한 사용자 뿐
-        if(!itemEntity.getUser().getUserId().equals(comments.getWriter()))
+        if(!itemEntity.getUser().getUserId().equals(authentication.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         // 2. 물품 등록 작성자 == 답글 작성자 라는건 위의 예외에서 증명
         // 만약 댓글이 등록된 대상 물품을 등록한 사람일 경우
         // -> 물품 등록 == 댓글 == 답글 다 같은 작성자이다.
-        if (commentEntity.getUser().getUserId().equals(comments.getWriter())){
+        if (commentEntity.getUser().getUserId().equals(authentication.getName())){
             // 물품을 등록할 때 사용한 비밀번호를 첨부할 경우 답글 항목을 수정할 수 있다.
             // 물품 등록 비밀번호 != 답글 비밀번호 -> 예외 처리
-            itemEntity.validatePassword(comments.getPassword());
+            itemEntity.validatePassword(userEntity.getPassword());
         }
 
         commentEntity.setReply(comments.getReply());
-        CommentDto.fromEntity(commentRepository.save(commentEntity));
+        commentRepository.save(commentEntity);
     }
 
     // Delete Comment
-    public void deleteComment(Long commentId, Long itemId, CommentDto comments) {
+    public void deleteComment(Long commentId, Long itemId, Authentication authentication) {
         CommentEntity commentEntity = validateCommentByItemId(commentId, itemId);
-        commentEntity.validatePassword(comments.getPassword());
+        UserEntity userEntity = getUserEntity(authentication);
+
+        commentEntity.validatePassword(userEntity.getPassword());
         commentRepository.deleteById(commentId);
+    }
+
+    // Find User
+    private UserEntity getUserEntity(Authentication authentication) {
+        return userRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     // 해당 게시글이 존재하는지
