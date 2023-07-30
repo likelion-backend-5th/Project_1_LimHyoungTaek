@@ -8,6 +8,7 @@ import com.be05.market.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +21,9 @@ public class ItemController {
 
     // TODO: POST /items
     @PostMapping
-    public ResponseDto create(@RequestBody SalesItemDto items) {
-        itemService.createItem(items, items.getWriter());
+    public ResponseDto create(@RequestBody SalesItemDto items,
+                              Authentication authentication) {
+        itemService.createItem(items, authentication);
         responseDto.setMessage("등록이 완료되었습니다.");
         return responseDto;
     }
@@ -56,18 +58,16 @@ public class ItemController {
             value = "/{itemId}/image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseDto uploadImage(@PathVariable Long itemId,
-                                   @RequestParam("password") String password,
                                    @RequestParam("image") MultipartFile itemFile) {
-        itemService.uploadItemImage(itemId, password, itemFile);
+        itemService.uploadItemImage(itemId, itemFile);
         responseDto.setMessage("이미지가 등록되었습니다.");
         return responseDto;
     }
 
     // TODO: DELETE /items/{itemId}
     @DeleteMapping("/{itemId}")
-    public ResponseDto delete(@PathVariable Long itemId,
-                              @RequestBody SalesItemDto items) {
-        itemService.deleteItem(itemId, items);
+    public ResponseDto delete(@PathVariable Long itemId) {
+        itemService.deleteItem(itemId);
         responseDto.setMessage("물품을 삭제했습니다.");
         return responseDto;
     }

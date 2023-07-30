@@ -1,12 +1,13 @@
 package com.be05.market.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter @Setter
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -27,4 +28,10 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<ItemEntity> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ProposalEntity> negotiations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<CommentEntity> comments = new ArrayList<>();
 }

@@ -2,15 +2,16 @@ package com.be05.market.entity;
 
 import com.be05.market.service.PasswordValidatable;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
+@Getter @Setter
 @Table(name = "sales_item")
 public class ItemEntity implements PasswordValidatable {
     @Id
@@ -21,8 +22,6 @@ public class ItemEntity implements PasswordValidatable {
     private String imageURL;
     private Long minPriceWanted;
     private String status;
-    private String writer;
-    private String password;
 
     @OneToMany(mappedBy = "item")
     private List<CommentEntity> itemComments = new ArrayList<>();
@@ -36,7 +35,7 @@ public class ItemEntity implements PasswordValidatable {
 
     @Override
     public void validatePassword(String password) {
-        if (!getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
         }
     }

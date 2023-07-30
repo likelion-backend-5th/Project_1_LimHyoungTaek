@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,8 +31,8 @@ public class ItemService {
     private final UserRepository userRepository;
 
     // CREATE
-    public void createItem(SalesItemDto items, String userId) {
-        UserEntity userEntity = userRepository.findByUserId(userId)
+    public void createItem(SalesItemDto items, Authentication authentication) {
+        UserEntity userEntity = userRepository.findByUserId(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         itemRepository.save(items.newEntity(userEntity));
     }
@@ -55,7 +56,7 @@ public class ItemService {
     // Update
     public void updateItem(Long id, SalesItemDto item) {
         ItemEntity itemEntity = getItemById(id); // Import item entities with ID
-        itemEntity.validatePassword(item.getPassword()); // Check Password
+        itemEntity.validatePassword(itemEntity.getUser().getPassword()); // Check Password
 
         itemEntity.setTitle(item.getTitle());
         itemEntity.setDescription(item.getDescription());
@@ -65,10 +66,10 @@ public class ItemService {
     }
 
     // Upload Image
-    public void uploadItemImage(Long id, String password, MultipartFile itemFile) {
+    public void uploadItemImage(Long id, MultipartFile itemFile) {
         // 0. Handling Exceptions
         ItemEntity itemEntity = getItemById(id);
-        itemEntity.validatePassword(password);
+        itemEntity.validatePassword(itemEntity.getUser().getPassword());
 
         // 1. create folder
         String itemDirPath = String.format("images/%d/", id);
@@ -106,9 +107,9 @@ public class ItemService {
     }
 
     // Delete
-    public void deleteItem(Long id, SalesItemDto item) {
+    public void deleteItem(Long id) {
         ItemEntity itemEntity = getItemById(id);
-        itemEntity.validatePassword(item.getPassword());
+        itemEntity.validatePassword(itemEntity.getUser().getPassword());
         if (itemEntity.getStatus().equals("판매 완료")) // 판매 완료인데 지우려고 할 경우
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
