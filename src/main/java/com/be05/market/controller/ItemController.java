@@ -40,15 +40,15 @@ public class ItemController {
     // TODO: GET /items/{itemId}
     @GetMapping("/{itemId}")
     public ContentInfoDto readOne(@PathVariable("itemId") Long id) {
-        SalesItemDto itemDto = itemService.read(id);
-        return new ContentInfoDto(itemDto);
+        return itemService.read(id);
     }
 
     // TODO: PUT /items/{itemId}
     @PutMapping("/{itemId}")
     public ResponseDto update(@PathVariable Long itemId,
-                             @RequestBody SalesItemDto items) {
-        itemService.updateItem(itemId, items);
+                             @RequestBody SalesItemDto items,
+                              Authentication authentication) {
+        itemService.updateItem(itemId, items, authentication);
         responseDto.setMessage("물품이 수정되었습니다.");
         return responseDto;
     }
@@ -58,16 +58,17 @@ public class ItemController {
             value = "/{itemId}/image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseDto uploadImage(@PathVariable Long itemId,
-                                   @RequestParam("image") MultipartFile itemFile) {
-        itemService.uploadItemImage(itemId, itemFile);
+                                   @RequestParam("image") MultipartFile itemFile,
+                                   Authentication authentication) {
+        itemService.uploadItemImage(itemId, itemFile, authentication);
         responseDto.setMessage("이미지가 등록되었습니다.");
         return responseDto;
     }
 
     // TODO: DELETE /items/{itemId}
     @DeleteMapping("/{itemId}")
-    public ResponseDto delete(@PathVariable Long itemId) {
-        itemService.deleteItem(itemId);
+    public ResponseDto delete(@PathVariable Long itemId, Authentication authentication) {
+        itemService.deleteItem(itemId, authentication);
         responseDto.setMessage("물품을 삭제했습니다.");
         return responseDto;
     }

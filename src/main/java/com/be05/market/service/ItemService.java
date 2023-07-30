@@ -1,5 +1,6 @@
 package com.be05.market.service;
 
+import com.be05.market.dto.mapping.ContentInfoDto;
 import com.be05.market.dto.mapping.ItemPageInfoDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.entity.ItemEntity;
@@ -32,8 +33,7 @@ public class ItemService {
 
     // CREATE
     public void createItem(SalesItemDto items, Authentication authentication) {
-        UserEntity userEntity = userRepository.findByUserId(authentication.getName())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        UserEntity userEntity = getUserEntity(authentication);
         itemRepository.save(items.newEntity(userEntity));
     }
 
@@ -46,30 +46,30 @@ public class ItemService {
     }
 
     // FindById
-    public SalesItemDto read(Long id) {
+    public ContentInfoDto read(Long id) {
         Optional<ItemEntity> optionalItem = itemRepository.findById(id);
         log.info(String.valueOf(optionalItem));
-        if (optionalItem.isPresent()) return SalesItemDto.fromEntity(optionalItem.get());
+        if (optionalItem.isPresent()) return new ContentInfoDto(optionalItem.get());
         else throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
     // Update
-    public void updateItem(Long id, SalesItemDto item) {
+    public void updateItem(Long id, SalesItemDto item, Authentication authentication) {
         ItemEntity itemEntity = getItemById(id); // Import item entities with ID
-        itemEntity.validatePassword(itemEntity.getUser().getPassword()); // Check Password
+        UserEntity userEntity = getUserEntity(authentication);
+        itemEntity.validatePassword(userEntity.getPassword()); // Check Password
 
-        itemEntity.setTitle(item.getTitle());
-        itemEntity.setDescription(item.getDescription());
-        itemEntity.setMinPriceWanted(item.getMinPriceWanted());
-        itemRepository.save(itemEntity);
+        itemRepository.save(item.updateEntity(itemEntity));
 
     }
 
     // Upload Image
-    public void uploadItemImage(Long id, MultipartFile itemFile) {
+    public void uploadItemImage(Long id, MultipartFile itemFile,
+                                Authentication authentication) {
         // 0. Handling Exceptions
         ItemEntity itemEntity = getItemById(id);
-        itemEntity.validatePassword(itemEntity.getUser().getPassword());
+        UserEntity userEntity = getUserEntity(authentication);
+        itemEntity.validatePassword(userEntity.getPassword());
 
         // 1. create folder
         String itemDirPath = String.format("images/%d/", id);
@@ -103,18 +103,25 @@ public class ItemService {
         // 3. Set ImageURL
         log.info(String.format("/static/%d/%s", id, pfpName));
         itemEntity.setImageURL(String.format("/static/%d/%s", id, pfpName));
-        SalesItemDto.fromEntity(itemRepository.save(itemEntity));
+        itemRepository.save(itemEntity);
     }
 
     // Delete
-    public void deleteItem(Long id) {
+    public void deleteItem(Long id, Authentication authentication) {
         ItemEntity itemEntity = getItemById(id);
-        itemEntity.validatePassword(itemEntity.getUser().getPassword());
+        UserEntity userEntity = getUserEntity(authentication);
+        itemEntity.validatePassword(userEntity.getPassword());
         if (itemEntity.getStatus().equals("판매 완료")) // 판매 완료인데 지우려고 할 경우
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         if (itemRepository.existsById(id)) itemRepository.deleteById(id);
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    // Find User
+    private UserEntity getUserEntity(Authentication authentication) {
+        return userRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     // Import item entities with ID

@@ -17,17 +17,6 @@ public class SalesItemDto {
     private Long minPriceWanted;
     private String status;
 
-    public static SalesItemDto fromEntity(ItemEntity entity) {
-        SalesItemDto salesItem = new SalesItemDto();
-        salesItem.setId(entity.getId());
-        salesItem.setTitle(entity.getTitle());
-        salesItem.setDescription(entity.getDescription());
-        salesItem.setImageURL(entity.getImageURL());
-        salesItem.setMinPriceWanted(entity.getMinPriceWanted());
-        salesItem.setStatus(entity.getStatus());
-        return salesItem;
-    }
-
     public ItemEntity newEntity(UserEntity user) {
         ItemEntity entity = new ItemEntity();
         entity.setTitle(title);
@@ -36,5 +25,12 @@ public class SalesItemDto {
         entity.setStatus("판매중");
         entity.setUser(user);
         return entity;
+    }
+
+    public ItemEntity updateEntity(ItemEntity itemEntity) {
+        itemEntity.setTitle(title);
+        itemEntity.setDescription(description);
+        itemEntity.setMinPriceWanted(minPriceWanted);
+        return itemEntity;
     }
 }
