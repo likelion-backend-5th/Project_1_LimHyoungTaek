@@ -57,13 +57,13 @@ public class CommentService {
 
         // 1. 답글 작성자 != 물품 등록 작성자 -> 예외 처리
         // 댓글에 답글을 달 수 있는 사용자는 물품 정보를 등록한 사용자 뿐
-        if(!itemEntity.getWriter().equals(comments.getWriter()))
+        if(!itemEntity.getUser().getUserId().equals(comments.getWriter()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         // 2. 물품 등록 작성자 == 답글 작성자 라는건 위의 예외에서 증명
         // 만약 댓글이 등록된 대상 물품을 등록한 사람일 경우
         // -> 물품 등록 == 댓글 == 답글 다 같은 작성자이다.
-        if (commentEntity.getWriter().equals(comments.getWriter())){
+        if (commentEntity.getUser().getUserId().equals(comments.getWriter())){
             // 물품을 등록할 때 사용한 비밀번호를 첨부할 경우 답글 항목을 수정할 수 있다.
             // 물품 등록 비밀번호 != 답글 비밀번호 -> 예외 처리
             itemEntity.validatePassword(comments.getPassword());

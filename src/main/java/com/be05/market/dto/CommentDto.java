@@ -18,8 +18,6 @@ public class CommentDto {
     public static CommentDto fromEntity(CommentEntity entity) {
         CommentDto comments = new CommentDto();
         comments.setId(entity.getId());
-        comments.setWriter(entity.getWriter());
-        comments.setPassword(entity.getPassword());
         comments.setContent(entity.getContent());
         comments.setReply(entity.getReply());
         return comments;
@@ -28,8 +26,6 @@ public class CommentDto {
     public CommentEntity newEntity(ItemEntity item) {
         CommentEntity entity = new CommentEntity();
         entity.setItem(item); // 기존 item_id 대체
-        entity.setWriter(writer);
-        entity.setPassword(password);
         entity.setContent(content);
         return entity;
     }

@@ -14,8 +14,6 @@ public class CommentEntity implements PasswordValidatable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
-    private String writer;
-    private String password;
     private String content;
     private String reply;
 
@@ -23,9 +21,13 @@ public class CommentEntity implements PasswordValidatable {
     @JoinColumn(name = "item")
     private ItemEntity item;
 
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private UserEntity user;
+
     @Override
     public void validatePassword(String password) {
-        if (!getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
         }
     }
