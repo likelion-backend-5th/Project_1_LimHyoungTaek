@@ -28,6 +28,8 @@
 <details>
 <summary><b>💡 ① 중고 물품 관리, 댓글, 제안</b></summary>
 
+`git clone` 이후, `application.properties`의 `jwt.secret` 값을 변경해야 작동합니다.
+
 ### 1. 물품 관리
 <details>
 <summary><b><u>중고 물품 관리 API</u></b></summary>
