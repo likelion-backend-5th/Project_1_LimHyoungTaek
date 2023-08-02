@@ -44,7 +44,7 @@ public class CommentService {
         existById(itemId);
         Pageable pageable =
                 PageRequest.of(page, 10, Sort.by("id"));
-        Page<CommentEntity> commentEntities = commentRepository.findAll(pageable);
+        Page<CommentEntity> commentEntities = commentRepository.findAllByItemId(itemId, pageable);
         return commentEntities.map(CommentPageInfoDto::fromEntity);
     }
 
