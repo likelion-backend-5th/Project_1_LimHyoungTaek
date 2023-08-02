@@ -398,7 +398,85 @@ DB:
 
 [//]: # (<summary><b>💡 ③ 채팅, UI 구현, 인증 서버 분리</b></summary>)
 
+### 1. INDEX, 로그인, 회원가입
+<details>
+<summary><b>HOME - GET / -> (redirect)/items/view</b></summary>
 
+![GET /users/login/view](readme_img/ui0.png)
+
+</details>
+
+<details>
+<summary><b>회원가입 - GET /users/register/view</b></summary>
+
+![GET /users/login/view](readme_img/ui0-1.png)
+
+</details>
+
+<details>
+<summary><b>로그인 - GET /users/login/view</b></summary>
+
+![GET /users/login/view](readme_img/ui1.png)
+
+</details>
+
+<details>
+<summary><b>로그인 후 HOME - GET /items/view</b></summary>
+
+![GET /users/login/view](readme_img/ui1.png)
+
+<br>
+
+[📁 **REST API 돌아가기**](#-rest-api)
+</details>
+
+
+### 2. 물품 등록, 이미지 업로드, 물품 화면
+<details>
+<summary><b>물품 등록 - GET /items/register/view</b></summary>
+
+![GET /users/login/view](readme_img/ui0-2-1.png)
+</details>
+
+<details>
+<summary><b>전체 게시물 - GET /items/view</b></summary>
+
+![GET /users/login/view](readme_img/ui0-2-2.png)
+</details>
+
+<details>
+<summary><b>물품 보기 - GET /items/view/{itemId}</b></summary>
+
+![GET /users/login/view](readme_img/ui0-2-3.png)
+
+</details>
+
+<details>
+<summary><b>댓글 - GET /items/view/{itemId}</b></summary>
+
+댓글 다는 것은 html 상에서 구현되지 않았습니다.
+
+![GET /users/login/view](readme_img/ui0-2-4.png)
+
+<br>
+
+[📁 **REST API 돌아가기**](#-rest-api)
+</details>
+
+### 3. Page
+<details>
+<summary><b>HOME(Page 관련) - GET / -> (redirect)/items/view</b></summary>
+
+글이 10개 이상 넘어가면 게시물 페이지를 넘길 수 있다.
+댓글도 가능하며 댓글은 15개가 limit으로 잡혀 있다.
+
+![GET /users/login/view](readme_img/ui0-3-1.png)
+![GET /users/login/view](readme_img/ui0-3-2.png)
+
+<br>
+
+[📁 **REST API 돌아가기**](#-rest-api)
+</details>
 
 </details>
 
@@ -754,10 +832,10 @@ public class CommentService {
 <summary>펼쳐 보기</summary>
 
 <details>
-<summary>✨ <b>2023-07-26</b>: DAY 1 / 사용자 인증</summary>
+<summary>✨ <b>2023-07-26~27</b>: DAY 1 / 사용자 인증</summary>
 
-`Milestones`: [1️⃣ **DAY 1 / 인증 만들기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/milestone/1?closed=1)<br>
-`Issues`:<br>
+`Milestones` : [1️⃣ **DAY 1 / 인증 만들기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/milestone/1?closed=1)<br>
+`Issues` :<br>
 - [DAY 1 / 인증 만들기 #1](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/1)
 - [1. 회원가입 기능 구현 #3](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/3)
 - [2. 로그인 기능 구현 #2](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/2)
@@ -769,23 +847,23 @@ public class CommentService {
 </details>
 
 <details>
-<summary>✨ <b>2023-07-27</b>: DAY 2 / 관계 설정</summary>
+<summary>✨ <b>2023-07-27~28</b>: DAY 2 / 관계 설정</summary>
 
-`Milestones`: [2️⃣ **DAY 2 / 관계 설정하기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/milestone/2?closed=1)<br>
-`Issues`: [DAY 2 / 관계 설정하기 #6](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/6)<br>
-`Pull Requests`: [관계 설정 및 관계 변경으로 인한 코드 변경 #8](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/pull/8)
+`Milestones` : [2️⃣ **DAY 2 / 관계 설정하기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/milestone/2?closed=1)<br>
+`Issues` : [DAY 2 / 관계 설정하기 #6](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/6)<br>
+`Pull Requests` : [관계 설정 및 관계 변경으로 인한 코드 변경 #8](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/pull/8)
 
 <br>
 
 </details>
 
 <details>
-<summary>✨ <b>2023-07-28</b>: DAY 3 / 기능 접근 권한 설정</summary>
+<summary>✨ <b>2023-07-28~31</b>: DAY 3 / 기능 접근 권한 설정</summary>
 
-`Milestones`: [3️⃣ **DAY 3/ 기능 접근 설정하기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/milestone/3?closed=1)<br>
-`Issues`: [DAY 3 / 기능에 대한 접근 권한 설정 #7](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/7)<br>
-`Pull Requests`: [관계 설정 및 관계 변경으로 인한 코드 변경 #8](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/pull/8)<br>
-`Commits`:<br>
+`Milestones` : [3️⃣ **DAY 3/ 기능 접근 설정하기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/milestone/3?closed=1)<br>
+`Issues` : [DAY 3 / 기능에 대한 접근 권한 설정 #7](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/7)<br>
+`Pull Requests` : [관계 설정 및 관계 변경으로 인한 코드 변경 #8](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/pull/8)<br>
+`Commits` :<br>
 - Role 부여 후 Status(ADMIN, USER) 추가<br>
   [feat: Role(status) 추가 -> enum으로 생성](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/commit/e93a45ca80907765e73ce07dbbdbdf61c95f0bdd)
 - `ROLE_ADMIN` 권한일 경우 프로젝트의 모든 기능 사용 가능
@@ -797,19 +875,32 @@ public class CommentService {
 </details>
 
 <details>
-<summary>✨ <b>2023-07-31</b>: DAY 4 / UI 구현</summary>
+<summary>✨ <b>2023-07-31~</b>: DAY 4 / UI 구현</summary>
 
+`Milestones` : [4️⃣ **DAY 4/ UI 구현하기**](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/9)<br>
+`Issues` :<br>
+- [회원가입 화면을 구성하기 위해 필요한 항목을 생각해보자. #11](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/11)
+- [로그인 화면을 구성하기 위해 필요한 항목을 생각해보자. #12](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/12)
+- [물품 정보 조회 #10](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/10)
+- [물품 정보 등록 #13](https://github.com/likelion-backend-5th/Project_1_LimHyoungTaek/issues/13)
+
+`TODO` : HTML 댓글 등록 데이터 전달, 구매 제안 부분 구현 중
 </details>
 
-<details>
-<summary>✨ <b>2023-08-01</b>: DAY 5 / 채팅 구현</summary>
+[//]: # (<details>)
 
-</details>
+[//]: # (<summary>✨ <b>2023-08-01</b>: DAY 5 / 채팅 구현</summary>)
 
-<details>
-<summary>✨ <b>2023-08-02</b>: DAY 6 / 인증 서버 분리</summary>
+[//]: # ()
+[//]: # (</details>)
 
-</details>
+[//]: # ()
+[//]: # (<details>)
+
+[//]: # (<summary>✨ <b>2023-08-02</b>: DAY 6 / 인증 서버 분리</summary>)
+
+[//]: # ()
+[//]: # (</details>)
 
 </details>
 
