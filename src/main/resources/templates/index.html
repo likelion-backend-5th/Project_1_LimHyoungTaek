@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>멋사마켓</title>
+</head>
+<body>
+<h1>♻️멋사마켓♻️</h1><hr>
+
+<div style="display:flex; float: right">
+
+  <div id="authenticatedSection">
+    <a th:href="@{/items/register/view}">물건등록</a>
+    <a href="#" onclick="logout()">로그아웃</a>
+  </div>
+  <div id="unauthenticatedSection">
+    <a th:href="@{/users/register/view}">회원가입</a>
+    <a th:href="@{/users/login/view}">로그인</a>
+  </div>
+</div>
+<h2 style="margin-top: 30px">전체 게시물</h2>
+<table>
+  <thead>
+  <tr>
+    <th style="width: 40px; text-align: center">번호</th>
+    <th style="width: 25px"> </th>
+    <th style="width: 500px; text-align: center">제목</th>
+    <th style="width: 100px; text-align: center">판매 상태</th>
+    <th style="width: 100px; text-align: center">글쓴이</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Thymeleaf 반복문 -> 데이터 표시 -->
+  <tr th:each="itemEntity : ${itemEntities}">
+    <td style="text-align: center" th:text="${itemEntity.id}"></td>
+    <td style="text-align: center">
+      <!-- imageUrl != null -> emoji -->
+      <span th:if="${itemEntity.imageUrl != null}">&#x1F4BE;</span>
+    </td>
+    <td style="text-align: left"><a th:href="@{/items/view/{id}(id=${itemEntity.id})}" th:text="${itemEntity.title}"></a></td>
+    <td style="text-align: center" th:text="${itemEntity.status}"></td>
+    <!-- itemEntity.user -> userId(유저 이름) 정보 표시 -->
+    <td style="text-align: center" th:text="${itemEntity.user}"></td>
+  </tr>
+  </tbody>
+</table>
+<!-- 페이징 처리를 위한 이전/다음 버튼 -->
+<div style="width: 700px;text-align: center">
+  <a th:href="@{/items/view(page=${itemPage.getNumber()-1})}"
+     th:if="${itemPage.hasPrevious()}">&lt;PREV&gt;</a>
+  <span th:text="${itemPage.getNumber()}"></span>
+  <a th:href="@{/items/view(page=${itemPage.getNumber()+1})}"
+     th:if="${itemPage.hasNext()}">&lt;NEXT&gt;</a>
+</div>
+<script>
+  function logout() {
+    localStorage.removeItem("jwt");
+    window.location.href = "/";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const jwt = localStorage.getItem("jwt");
+    const authenticatedSection = document.getElementById("authenticatedSection");
+    const unauthenticatedSection = document.getElementById("unauthenticatedSection");
+
+    if (jwt) {
+      authenticatedSection.style.display = "block";
+      unauthenticatedSection.style.display = "none";
+    } else {
+      authenticatedSection.style.display = "none";
+      unauthenticatedSection.style.display = "block";
+    }
+  });
+
+</script>
+</body>
+</html>

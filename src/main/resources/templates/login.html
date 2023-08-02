@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>멋사마켓</title>
+</head>
+<body>
+<h1>♻️멋사마켓♻️</h1><hr>
+<h2>로그인</h2>
+
+<form id="loginForm">
+    <div style="width: 250px; margin-bottom: 10px">
+        <label for="loginUserId">아이디:
+            <input type="text" id="loginUserId" name="userId"
+                   style="float: right" required>
+        </label><br>
+
+        <label for="loginPassword">비밀번호:
+            <input type="password" id="loginPassword" name="password"
+                   style="float: right" required>
+        </label><br>
+    </div>
+    <div style="display:flex; justify-content: space-between; width: 250px">
+        <button type="submit">로그인</button>
+        <a th:href="@{/users/register/view}">회원가입</a>
+    </div>
+</form>
+
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const formData = {
+            userId: document.getElementById("loginUserId").value,
+            password: document.getElementById("loginPassword").value
+        };
+        fetch("/users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                const token = data.token;
+                localStorage.setItem("jwt", token);
+                window.location.href = "/items/view";
+            })
+            .catch(error => {
+                alert("아이디와 비밀번호가 일치하지 않습니다.");
+                console.error("Error:", error);
+            });
+    });
+</script>
+</body>
+</html>

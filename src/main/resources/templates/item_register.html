@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>멋사마켓</title>
+</head>
+<body>
+<h1>♻️멋사마켓♻️</h1><hr>
+<h2>물건 등록</h2>
+<form id="registerItemForm" action="/items/register/view" method="post"
+      enctype="multipart/form-data">
+  <!-- 물건 등록에 필요한 입력 폼들을 추가 -->
+  <!-- 예시: -->
+  <div style="width: 500px; margin-bottom: 10px">
+    <label for="itemTitle">제목:</label>
+    <input type="text" id="itemTitle" name="itemTitle"
+           style="float: right; width: 450px" required>
+  </div>
+  <div style="width: 500px; margin-bottom: 45px">
+    <label for="itemDescription">설명:</label>
+    <textarea id="itemDescription" name="itemDescription"
+              style="float: right; width: 450px; height: 50px" required></textarea>
+  </div>
+  <div style="width: 500px; margin-bottom: 10px">
+    <label for="itemPrice">가격:</label>
+    <input type="number" id="itemPrice" name="itemPrice"
+           style="float: right; width: 450px" required>
+  </div>
+  <div style="width: 350px; margin-bottom: 30px">
+    <label for="itemImage">이미지 첨부:</label>
+    <input type="file" id="itemImage" name="itemImage" accept=".jpg, .png">
+  </div>
+  <!-- 나머지 입력 폼들을 추가 -->
+  <div style="display:flex; justify-content: space-between; width: 500px">
+    <button type="submit">등록</button>
+    <a href="/items/view">돌아가기</a>
+  </div>
+</form>
+
+<script>
+    document.getElementById("registerItemForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const registerForm = new FormData();
+      registerForm.append("itemTitle", document.getElementById("itemTitle").value);
+      registerForm.append("itemDescription", document.getElementById("itemDescription").value);
+      registerForm.append("itemPrice", document.getElementById("itemPrice").value);
+
+      const itemImage = document.getElementById("itemImage").files[0];
+      if (itemImage) {
+        registerForm.append("itemImage", itemImage);
+      }
+      const jwt = localStorage.getItem("jwt");
+
+      fetch("/items/register/view", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + jwt,
+        },
+        body: registerForm
+      })
+              .then(data => {
+                alert("물건 등록이 완료되었습니다.");
+                window.location.href = "/items/view";
+              })
+              .catch(error => {
+                console.error("Error:", error);
+              });
+    });
+</script>
+
+</body>
+</html>
