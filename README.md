@@ -327,6 +327,8 @@ Response Body:
 <details><summary> 2. GET /users/login </summary>
 
 Request Body:
+
+**(JSON Data)**
 ```json
 {
   // 회원가입
@@ -334,6 +336,8 @@ Request Body:
   "password": "asdf"
 }
 ```
+**(Form Data)**
+![GET /users/login_2-2](readme_img/log2-2.png)
 
 Response Body:
 
