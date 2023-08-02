@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ContentInfoDto {
+    private Long id;
     private String title;
     private String description;
     private Long minPriceWanted;
@@ -14,6 +15,7 @@ public class ContentInfoDto {
     private String user;
 
     public ContentInfoDto(ItemEntity entity) {
+        this.id = entity.getId();
         this.title = entity.getTitle();
         this.description = entity.getDescription();
         this.imageUrl = entity.getImageURL();

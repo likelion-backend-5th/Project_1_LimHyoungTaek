@@ -1,10 +1,13 @@
 package com.be05.market.controller;
 
+import com.be05.market.dto.CommentDto;
 import com.be05.market.dto.SalesItemDto;
 import com.be05.market.dto.mapping.CommentPageInfoDto;
 import com.be05.market.dto.mapping.ContentInfoDto;
 import com.be05.market.dto.mapping.ItemPageInfoDto;
+import com.be05.market.entity.ItemEntity;
 import com.be05.market.entity.UserEntity;
+import com.be05.market.repository.CommentRepository;
 import com.be05.market.repository.ItemRepository;
 import com.be05.market.repository.UserRepository;
 import com.be05.market.service.CommentService;
@@ -26,6 +29,7 @@ public class ViewController {
     private final CommentService commentService;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     @GetMapping("/")
     public String home() {
@@ -68,6 +72,20 @@ public class ViewController {
         model.addAttribute("commentPage", commentPage);
         model.addAttribute("itemId", id);
         return "item_article";
+    }
+
+    @PostMapping("/items/view/{itemId}")
+    public String postComment(@PathVariable("itemId") Long id,
+                              @RequestParam("content") String content,
+                              Authentication authentication) {
+        ItemEntity item = itemRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        UserEntity user = userRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        CommentDto dto = new CommentDto();
+        dto.setContent(content);
+        commentRepository.save(dto.newEntity(item, user));
+        return "redirect:/items/view/{itemId}";
     }
 
     @PostMapping("/items/register/view")
