@@ -63,15 +63,6 @@ public class UserService {
         return UserDto.fromEntity(userEntity);
     }
 
-    public void updateUser(UserDetails user) {
-    }
-
-    public void deleteUser(String username) {
-    }
-
-    public void changePassword(String oldPassword, String newPassword) {
-    }
-
     public boolean userExists(String userId) {
         return this.userRepository.existsByUserId(userId);
     }
