@@ -1,6 +1,6 @@
 package com.be05.market.service;
 
-import com.be05.market.dto.NegotiationDto;
+import com.be05.market.dto.ProposalDto;
 import com.be05.market.dto.ResponseDto;
 import com.be05.market.dto.mapping.ProposalPageInfoDto;
 import com.be05.market.entity.ItemEntity;
@@ -34,14 +34,14 @@ public class ProposalService {
     private final ItemService itemService;
 
     // Post Purchase Offer
-    public void postOffer(Long itemId, NegotiationDto negotiationDto, Authentication authentication) {
+    public void postOffer(Long itemId, ProposalDto proposalDto, Authentication authentication) {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         UserEntity userEntity = getUserEntity(authentication);
-        if (negotiationDto.getSuggestedPrice() == null)
+        if (proposalDto.getSuggestedPrice() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        proposalRepository.save(negotiationDto.newEntity(itemEntity, userEntity));
+        proposalRepository.save(proposalDto.newEntity(itemEntity, userEntity));
     }
 
     // View Purchase Offer
@@ -73,7 +73,7 @@ public class ProposalService {
 
     // PUT Status or SuggestedPrice?
     public ResponseDto putUpdateOffer(Long proposalId, Long itemId,
-                                      NegotiationDto negotiationDto,
+                                      ProposalDto proposalDto,
                                       Authentication authentication) {
         ProposalEntity proposalEntity = validateProposalByItemId(proposalId, itemId);
         UserEntity userEntity = getUserEntity(authentication);
@@ -85,14 +85,14 @@ public class ProposalService {
                 proposalEntity.validatePassword(userEntity.getPassword()); // 비밀번호 체크
             // 1) 구매 가격 제안 수정("제안" & SuggestedPrice != null)
             if (proposalEntity.getStatus().equals("제안")
-                    && negotiationDto.getSuggestedPrice() != null) {
-                modifiedOffer(proposalEntity, negotiationDto);
+                    && proposalDto.getSuggestedPrice() != null) {
+                modifiedOffer(proposalEntity, proposalDto);
                 responseDto.setMessage("제안이 수정되었습니다.");
                 return responseDto;
             }
             // 2) 현재 "수락" 상태 & Request "확정" 상태 -> 판매 완료
             if (proposalEntity.getStatus().equals("수락")
-                    && negotiationDto.getStatus().equals("확정")) {
+                    && proposalDto.getStatus().equals("확정")) {
                 itemEntity.setStatus("판매 완료");
                 itemRepository.save(itemEntity);
 
@@ -113,15 +113,15 @@ public class ProposalService {
                 || userEntity.getRole() == Role.ROLE_ADMIN) {
             if (userEntity.getRole() == Role.ROLE_USER)
                 itemEntity.validatePassword(userEntity.getPassword());
-            acceptRejectOffer(proposalEntity, itemEntity, negotiationDto, authentication);
+            acceptRejectOffer(proposalEntity, itemEntity, proposalDto, authentication);
             return responseDto;
         } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     // Modifying Purchase Offer
     public void modifiedOffer(ProposalEntity proposalEntity,
-                              NegotiationDto negotiationDto) {
-        proposalEntity.setSuggestedPrice(negotiationDto.getSuggestedPrice());
+                              ProposalDto proposalDto) {
+        proposalEntity.setSuggestedPrice(proposalDto.getSuggestedPrice());
         proposalRepository.save(proposalEntity);
     }
 
@@ -140,11 +140,11 @@ public class ProposalService {
 
     // Accept, Reject Purchase Offer
     public void acceptRejectOffer(ProposalEntity proposalEntity, ItemEntity itemEntity,
-                            NegotiationDto negotiationDto, Authentication authentication) {
+                                  ProposalDto proposalDto, Authentication authentication) {
         UserEntity userEntity = getUserEntity(authentication);
         if (userEntity.getRole() == Role.ROLE_USER)
             itemEntity.validatePassword(userEntity.getPassword());
-        proposalEntity.setStatus(negotiationDto.getStatus());
+        proposalEntity.setStatus(proposalDto.getStatus());
         proposalRepository.save(proposalEntity);
         responseDto.setMessage("제안의 상태가 변경되었습니다.");
     }

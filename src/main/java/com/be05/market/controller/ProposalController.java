@@ -1,6 +1,6 @@
 package com.be05.market.controller;
 
-import com.be05.market.dto.NegotiationDto;
+import com.be05.market.dto.ProposalDto;
 import com.be05.market.dto.ResponseDto;
 import com.be05.market.dto.mapping.ProposalPageInfoDto;
 import com.be05.market.service.ProposalService;
@@ -19,9 +19,9 @@ public class ProposalController {
     // TODO: POST /items/{itemId}/proposal
     @PostMapping
     public ResponseDto createProposal(@PathVariable("itemId") Long itemId,
-                                      @RequestBody NegotiationDto negotiationDto,
+                                      @RequestBody ProposalDto proposalDto,
                                       Authentication authentication) {
-        proposalService.postOffer(itemId, negotiationDto, authentication);
+        proposalService.postOffer(itemId, proposalDto, authentication);
         responseDto.setMessage("구매 제안이 등록되었습니다.");
         return responseDto;
     }
@@ -38,9 +38,9 @@ public class ProposalController {
     @PutMapping("/{proposalId}")
     public ResponseDto updateProposal(@PathVariable("itemId") Long itemId,
                                       @PathVariable("proposalId") Long proposalId,
-                                      @RequestBody NegotiationDto negotiationDto,
+                                      @RequestBody ProposalDto proposalDto,
                                       Authentication authentication) {
-        return proposalService.putUpdateOffer(proposalId, itemId, negotiationDto, authentication);
+        return proposalService.putUpdateOffer(proposalId, itemId, proposalDto, authentication);
     }
 
     // TODO: DELETE /items/{itemId}/proposal/{proposalId}

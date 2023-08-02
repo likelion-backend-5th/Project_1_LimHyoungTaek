@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class NegotiationDto {
+public class ProposalDto {
     private Long id;
     @NotNull(message = "제안 가격을 작성해주세요.")
     private Long suggestedPrice;
