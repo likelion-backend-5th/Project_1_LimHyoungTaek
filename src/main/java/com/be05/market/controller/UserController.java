@@ -26,7 +26,7 @@ public class UserController {
             responseDto.setMessage("아이디 혹은 비밀번호를 입력해주세요.");
         // json 데이터로 다 받아오고 싶지만 내 지식의 한에서는 entity에 추가해야하기 때문에
         // 그냥 form-data로 받아오는 것으로 수정
-        if (dto.getPassword().equals(passwordCheck))
+        if (!dto.getPassword().equals(passwordCheck))
             responseDto.setMessage("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
         else {
             jpaUserDetailsManager.createUser(dto);
